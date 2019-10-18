@@ -1,0 +1,22 @@
+{
+  "name": "web-audit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isv9/web-audit.git"
+  },
+  "keywords": [
+    "wrb-audit"
+  ],
+  "author": "isv9",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isv9/web-audit/issues"
+  },
+  "homepage": "https://github.com/isv9/web-audit#readme"
+}
