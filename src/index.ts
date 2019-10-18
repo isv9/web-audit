@@ -4,11 +4,13 @@ type AuditSectionResult = {
 
 type AuditResult = {
   tables: (AuditResultTable)[];
+  liveCollections?: (AuditResultLiveCollection)[];
   warnings?: string[];
   errors?: string[];
 };
 
 type AuditResultTable = { name: string } & { [key: string]: string | number };
+type AuditResultLiveCollection = { name: string, collection: NodeListOf<Node> };
 
 class WebAudit {
   private readonly commonTagsNames: string[] = [
@@ -33,18 +35,21 @@ class WebAudit {
   }
 
   private auditLinks (): AuditSectionResult {
+    const liveCollections: AuditResultLiveCollection[] = []
     const emptyLinks = document.querySelectorAll('a:empty')
-    const table: AuditResultTable = {
-      name: 'links',
-      'empty-links': emptyLinks.length
-    }
+
     const warnings: string[] = []
     if (emptyLinks.length > 0) {
       warnings.push('Document has empty links')
+      liveCollections.push({
+        name: 'empty links',
+        collection: emptyLinks
+      })
     }
     return {
       name: 'links',
-      tables: [table],
+      tables: [],
+      liveCollections,
       warnings
     }
   }
@@ -124,21 +129,28 @@ class WebAudit {
     if (articlePart + sectionPart < 90) {
       warnings.push('Document has much div')
     }
-    const emptyElements = this.blockTagsNames.reduce<AuditResultTable>((table, tag) => {
-      table[tag] = document.querySelectorAll(`${tag}:empty`).length
-      return table
-    }, { name: 'empty block elements count in dom' })
-    if (Object.entries(emptyElements).some(([, emptyCount]) => emptyCount > 0)) {
+
+    const emptyElementsLiveCollections = this.blockTagsNames.reduce<AuditResultLiveCollection[]>((liveCollections, tag) => {
+      const emptyElements = document.querySelectorAll(`${tag}:empty`)
+      if (emptyElements.length > 0) {
+        liveCollections.push({
+          name: `"${tag}" elements count in dom`,
+          collection: emptyElements
+        })
+      }
+      return liveCollections
+    }, [])
+    if (emptyElementsLiveCollections.length > 0) {
       warnings.push('Document has empty blocks')
     }
 
     return {
       warnings,
+      liveCollections: emptyElementsLiveCollections,
       tables: [{
         name: 'block elements count in dom',
         ...blockElements
-      },
-        emptyElements
+      }
       ]
     }
   }
@@ -148,16 +160,20 @@ class WebAudit {
   }
 
   static renderAuditResult (auditSectionResult: AuditSectionResult) {
-    const { name, tables, errors = [], warnings = [] } = auditSectionResult
+    const { name, tables, errors = [], warnings = [], liveCollections = [] } = auditSectionResult
     console.group(name)
-    tables.forEach(({ name, ...tableDataSet }) => {
+    tables.forEach(({ name, nodes, ...tableDataSet }) => {
       console.log(name)
       console.table(tableDataSet)
     })
+    liveCollections.forEach(({ name, collection }) => {
+      console.log(name)
+      console.log(collection)
+    })
     console.log('Summary')
     if (errors.length > 0 || warnings.length > 0) {
-      errors.forEach(console.error)
-      warnings.forEach(console.warn)
+      errors.forEach(message => console.error(message))
+      warnings.forEach(message => console.warn(message))
     } else {
       console.log('It is OK')
     }
@@ -170,17 +186,20 @@ class WebAudit {
       const {
         warnings = [],
         errors = [],
-        tables
+        tables,
+        liveCollections = []
       } = auditResult
       return {
         tables: result.tables.concat(tables),
         errors: (result.errors || []).concat(errors),
         warnings: (result.warnings || []).concat(warnings),
+        liveCollections: (result.liveCollections || []).concat(liveCollections),
       }
     }, {
       tables: [],
       errors: [],
-      warnings: []
+      warnings: [],
+      liveCollections: []
     })
   }
 }
