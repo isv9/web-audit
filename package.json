@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "node node_modules/typescript/bin/tsc"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/isv9/web-audit/issues"
   },
-  "homepage": "https://github.com/isv9/web-audit#readme"
+  "homepage": "https://github.com/isv9/web-audit#readme",
+  "dependencies": {
+    "typescript": "^3.6.4"
+  }
 }
