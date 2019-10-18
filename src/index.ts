@@ -25,9 +25,28 @@ class WebAudit {
 
   audit () {
     const auditSemanticsResult = this.auditSemantics()
+    const auditLinksResult = this.auditLinks()
     console.group('web audit')
     WebAudit.renderAuditResult(auditSemanticsResult)
+    WebAudit.renderAuditResult(auditLinksResult)
     console.groupEnd()
+  }
+
+  private auditLinks (): AuditSectionResult {
+    const emptyLinks = document.querySelectorAll('a:empty')
+    const table: AuditResultTable = {
+      name: 'links',
+      'empty-links': emptyLinks.length
+    }
+    const warnings: string[] = []
+    if (emptyLinks.length > 0) {
+      warnings.push('Document has empty links')
+    }
+    return {
+      name: 'links',
+      tables: [table],
+      warnings
+    }
   }
 
   private auditSemantics (): AuditSectionResult {
@@ -105,13 +124,22 @@ class WebAudit {
     if (articlePart + sectionPart < 90) {
       warnings.push('Document has much div')
     }
+    const emptyElements = this.blockTagsNames.reduce<AuditResultTable>((table, tag) => {
+      table[tag] = document.querySelectorAll(`${tag}:empty`).length
+      return table
+    }, { name: 'empty block elements count in dom' })
+    if (Object.entries(emptyElements).some(([, emptyCount]) => emptyCount > 0)) {
+      warnings.push('Document has empty blocks')
+    }
 
     return {
       warnings,
       tables: [{
         name: 'block elements count in dom',
         ...blockElements
-      },]
+      },
+        emptyElements
+      ]
     }
   }
 
