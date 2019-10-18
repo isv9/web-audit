@@ -134,7 +134,7 @@ class WebAudit {
       const emptyElements = document.querySelectorAll(`${tag}:empty`)
       if (emptyElements.length > 0) {
         liveCollections.push({
-          name: `"${tag}" elements count in dom`,
+          name: `Empty "${tag}" elements count in dom`,
           collection: emptyElements
         })
       }
