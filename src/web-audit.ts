@@ -1,82 +1,76 @@
+import { auditCommonSemantics, auditTextSemantics } from './audits/semantic'
+
+export type WebDocument = {
+  getElementsByTagNameCount (tag: string): number;
+};
+
 type AuditSectionResult = {
   name: string;
-} & AuditResult;
+  auditResults: AuditResult[];
+};
 
-type AuditResult = {
+export type AuditResult = {
+  name?: string;
   tables: (AuditResultTable)[];
   liveCollections?: (AuditResultLiveCollection)[];
+  logs?: string[];
   warnings?: string[];
   errors?: string[];
 };
 
-type AuditResultTable = { name: string } & { [key: string]: string | number };
+type AuditResultTable = { name?: string } & { [key: string]: string | number };
 type AuditResultLiveCollection = { name: string, collection: NodeListOf<Node> };
 
 export class WebAudit {
-  private readonly commonTagsNames: string[] = [
-    'nav',
-    'header',
-    'main',
-    'footer'
-  ]
+
   private readonly headerTagsNames: string[] = Array.from(new Array(6)).map(
     (_, index) => `h${index + 1}`
   )
   private readonly blockTagsNames: string[] = ['div', 'section', 'article']
-  private readonly textTagsNames: string[] = ['label', 'span', 'p']
+  private readonly webDocument: WebDocument
+
+  constructor (webDocument: WebDocument) {
+    this.webDocument = webDocument
+  }
 
   audit () {
     const auditSemanticsResult = this.auditSemantics()
-    const auditLinksResult = this.auditLinks()
+    // const auditLinksResult = this.auditLinks()
     console.group('web audit')
-    WebAudit.renderAuditResult(auditSemanticsResult)
-    WebAudit.renderAuditResult(auditLinksResult)
+    WebAudit.renderAuditSectionResult(auditSemanticsResult)
+    // WebAudit.renderAuditResult(auditLinksResult)
     console.groupEnd()
   }
 
-  private auditLinks (): AuditSectionResult {
-    const liveCollections: AuditResultLiveCollection[] = []
-    const emptyLinks = document.querySelectorAll('a:empty')
-
-    const warnings: string[] = []
-    if (emptyLinks.length > 0) {
-      warnings.push('Document has empty links')
-      liveCollections.push({
-        name: 'empty links',
-        collection: emptyLinks
-      })
-    }
-    return {
-      name: 'links',
-      tables: [],
-      liveCollections,
-      warnings
-    }
-  }
+  // private auditLinks (): AuditSectionResult {
+  //   const liveCollections: AuditResultLiveCollection[] = []
+  //   const emptyLinks = document.querySelectorAll('a:empty')
+  //
+  //   const warnings: string[] = []
+  //   if (emptyLinks.length > 0) {
+  //     warnings.push('Document has empty links')
+  //     liveCollections.push({
+  //       name: 'empty links',
+  //       collection: emptyLinks
+  //     })
+  //   }
+  //   return {
+  //     name: 'links',
+  //     tables: [],
+  //     liveCollections,
+  //     warnings
+  //   }
+  // }
 
   private auditSemantics (): AuditSectionResult {
 
     return {
       name: 'semantics',
-      ...WebAudit.mergeAuditResult(this.auditCommonSemantics(),
-        this.auditHeaderSemantics(),
-        this.auditTextSemantics(),
-        this.auditBlockSemantics())
-    }
-  }
-
-  private auditCommonSemantics (): AuditResult {
-    const commonElements = Object.fromEntries(
-      this.commonTagsNames.map(tag => [
-        tag,
-        WebAudit.getElementsByTagNameCount(tag)
-      ])
-    )
-    return {
-      tables: [{
-        name: 'common elements count in dom',
-        ...commonElements
-      }]
+      auditResults: [auditCommonSemantics(this.webDocument), auditTextSemantics(this.webDocument)]
+      // ...WebAudit.mergeAuditResult(this.auditCommonSemantics(),
+      //   this.auditHeaderSemantics(),
+      //   this.auditTextSemantics(),
+      //   this.auditBlockSemantics())
     }
   }
 
@@ -96,21 +90,6 @@ export class WebAudit {
       tables: [{
         name: 'header elements count in dom',
         ...headerElements
-      },]
-    }
-  }
-
-  private auditTextSemantics (): AuditResult {
-    const textElements = Object.fromEntries(
-      this.textTagsNames.map(tag => [
-        tag,
-        WebAudit.getElementsByTagNameCount(tag)
-      ])
-    )
-    return {
-      tables: [{
-        name: 'text elements count in dom',
-        ...textElements
       },]
     }
   }
@@ -159,9 +138,28 @@ export class WebAudit {
     return document.getElementsByTagName(tag).length
   }
 
-  static renderAuditResult (auditSectionResult: AuditSectionResult) {
-    const { name, tables, errors = [], warnings = [], liveCollections = [] } = auditSectionResult
-    console.group(name)
+  static renderAuditSectionResult (auditSectionResult: AuditSectionResult) {
+    const { name, auditResults } = auditSectionResult
+    const details = {
+      errorsCount: 0,
+      warningsCount: 0
+    }
+    auditResults.forEach(auditResult => {
+      const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors')
+      const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings')
+      details.errorsCount += errorsCount
+      details.warningsCount += warningsCount
+    })
+    console.group(`${name}, (errors="${details.errorsCount}", warnings="${details.warningsCount}")`)
+    auditResults.forEach(auditResult => WebAudit.renderAuditResult(auditResult))
+    console.groupEnd()
+  }
+
+  static renderAuditResult (auditResult: AuditResult) {
+    const { name, tables, errors = [], warnings = [], liveCollections = [], logs = [] } = auditResult
+    const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors')
+    const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings')
+    console.group(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`)
     tables.forEach(({ name, nodes, ...tableDataSet }) => {
       console.log(name)
       console.table(tableDataSet)
@@ -170,8 +168,9 @@ export class WebAudit {
       console.log(name)
       console.log(collection)
     })
+    logs.forEach(message => console.log(message))
     console.log('Summary')
-    if (errors.length > 0 || warnings.length > 0) {
+    if (errorsCount > 0 || warningsCount > 0) {
       errors.forEach(message => console.error(message))
       warnings.forEach(message => console.warn(message))
     } else {
@@ -181,26 +180,37 @@ export class WebAudit {
     console.groupEnd()
   }
 
-  static mergeAuditResult (...auditResults: AuditResult[]): AuditResult {
-    return auditResults.reduce<AuditResult>((result, auditResult) => {
-      const {
-        warnings = [],
-        errors = [],
-        tables,
-        liveCollections = []
-      } = auditResult
-      return {
-        tables: result.tables.concat(tables),
-        errors: (result.errors || []).concat(errors),
-        warnings: (result.warnings || []).concat(warnings),
-        liveCollections: (result.liveCollections || []).concat(liveCollections),
-      }
-    }, {
-      tables: [],
-      errors: [],
-      warnings: [],
-      liveCollections: []
-    })
+  static getAuditResultMessagesCount (auditResult: AuditResult, key: keyof AuditResult): number {
+    let property = auditResult[key]
+    if (property === null || property === undefined) {
+      property = []
+    }
+    if (Array.isArray(property)) {
+      return property.length
+    }
+    throw new Error('Property type must be array')
   }
+
+  // static mergeAuditResult (...auditResults: AuditResult[]): AuditResult {
+  //   return auditResults.reduce<AuditResult>((result, auditResult) => {
+  //     const {
+  //       warnings = [],
+  //       errors = [],
+  //       tables,
+  //       liveCollections = []
+  //     } = auditResult
+  //     return {
+  //       tables: result.tables.concat(tables),
+  //       errors: (result.errors || []).concat(errors),
+  //       warnings: (result.warnings || []).concat(warnings),
+  //       liveCollections: (result.liveCollections || []).concat(liveCollections),
+  //     }
+  //   }, {
+  //     tables: [],
+  //     errors: [],
+  //     warnings: [],
+  //     liveCollections: []
+  //   })
+  // }
 }
 

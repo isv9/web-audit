@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auditCommonSemantics document does not have any common tag 1`] = `
+Object {
+  "errors": Array [],
+  "name": "common elements count in dom",
+  "tables": Array [
+    Object {
+      "footer": 0,
+      "header": 0,
+      "main": 0,
+      "nav": 0,
+    },
+  ],
+  "warnings": Array [
+    "Document does not have main tag",
+  ],
+}
+`;
+
+exports[`auditCommonSemantics document has each common elements 1`] = `
+Object {
+  "errors": Array [],
+  "name": "common elements count in dom",
+  "tables": Array [
+    Object {
+      "footer": 1,
+      "header": 1,
+      "main": 1,
+      "nav": 1,
+    },
+  ],
+  "warnings": Array [],
+}
+`;
+
+exports[`auditCommonSemantics document has two main tags 1`] = `
+Object {
+  "errors": Array [
+    "Document must have one main tag",
+  ],
+  "name": "common elements count in dom",
+  "tables": Array [
+    Object {
+      "footer": 1,
+      "header": 1,
+      "main": 2,
+      "nav": 1,
+    },
+  ],
+  "warnings": Array [],
+}
+`;
+
+exports[`auditTextSemantics 1`] = `
+Object {
+  "name": "text elements count in dom",
+  "tables": Array [
+    Object {
+      "label": 1,
+      "p": 3,
+      "span": 2,
+    },
+  ],
+}
+`;
