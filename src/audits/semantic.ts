@@ -8,6 +8,9 @@ const commonTagsNames: string[] = [
 ]
 
 const textTagsNames: string[] = ['label', 'span', 'p']
+const headerTagsNames: string[] = Array.from(new Array(6)).map(
+  (_, index) => `h${index + 1}`
+)
 
 export function auditCommonSemantics (document: WebDocument): AuditResult {
   const commonElements = Object.fromEntries(
@@ -24,6 +27,9 @@ export function auditCommonSemantics (document: WebDocument): AuditResult {
     } else {
       warnings.push('Document does not have main tag')
     }
+  }
+  if (commonElements.header !== 1) {
+    warnings.push('Document does not have header tag')
   }
   return {
     name: 'common elements count in dom',
@@ -44,6 +50,26 @@ export function auditTextSemantics (document: WebDocument): AuditResult {
     name: 'text elements count in dom',
     tables: [{
       ...textElements
+    },]
+  }
+}
+
+export function auditHeaderSemantics (document: WebDocument): AuditResult {
+  const headerElements = Object.fromEntries(
+    headerTagsNames.map(tag => [
+      tag,
+      document.getElementsByTagNameCount(tag)
+    ])
+  )
+  const errors: string[] = []
+  if (headerElements['h1'] !== 1) {
+    errors.push('Document must have one h1')
+  }
+  return {
+    errors,
+    name: 'header elements count in dom',
+    tables: [{
+      ...headerElements
     },]
   }
 }

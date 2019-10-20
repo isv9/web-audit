@@ -1,4 +1,4 @@
-import { auditCommonSemantics, auditTextSemantics } from './audits/semantic'
+import { auditCommonSemantics, auditHeaderSemantics, auditTextSemantics } from './audits/semantic'
 
 export type WebDocument = {
   getElementsByTagNameCount (tag: string): number;
@@ -19,13 +19,10 @@ export type AuditResult = {
 };
 
 type AuditResultTable = { name?: string } & { [key: string]: string | number };
-type AuditResultLiveCollection = { name: string, collection: NodeListOf<Node> };
+type AuditResultLiveCollection = { name: string, collection: object };
 
 export class WebAudit {
 
-  private readonly headerTagsNames: string[] = Array.from(new Array(6)).map(
-    (_, index) => `h${index + 1}`
-  )
   private readonly blockTagsNames: string[] = ['div', 'section', 'article']
   private readonly webDocument: WebDocument
 
@@ -66,31 +63,13 @@ export class WebAudit {
 
     return {
       name: 'semantics',
-      auditResults: [auditCommonSemantics(this.webDocument), auditTextSemantics(this.webDocument)]
+      auditResults: [auditCommonSemantics(this.webDocument),
+        auditHeaderSemantics(this.webDocument),
+        auditTextSemantics(this.webDocument)]
       // ...WebAudit.mergeAuditResult(this.auditCommonSemantics(),
       //   this.auditHeaderSemantics(),
       //   this.auditTextSemantics(),
       //   this.auditBlockSemantics())
-    }
-  }
-
-  private auditHeaderSemantics (): AuditResult {
-    const headerElements = Object.fromEntries(
-      this.headerTagsNames.map(tag => [
-        tag,
-        WebAudit.getElementsByTagNameCount(tag)
-      ])
-    )
-    const errors: string[] = []
-    if (headerElements['h1'] !== 1) {
-      errors.push('Document must have one h1')
-    }
-    return {
-      errors,
-      tables: [{
-        name: 'header elements count in dom',
-        ...headerElements
-      },]
     }
   }
 
@@ -190,27 +169,5 @@ export class WebAudit {
     }
     throw new Error('Property type must be array')
   }
-
-  // static mergeAuditResult (...auditResults: AuditResult[]): AuditResult {
-  //   return auditResults.reduce<AuditResult>((result, auditResult) => {
-  //     const {
-  //       warnings = [],
-  //       errors = [],
-  //       tables,
-  //       liveCollections = []
-  //     } = auditResult
-  //     return {
-  //       tables: result.tables.concat(tables),
-  //       errors: (result.errors || []).concat(errors),
-  //       warnings: (result.warnings || []).concat(warnings),
-  //       liveCollections: (result.liveCollections || []).concat(liveCollections),
-  //     }
-  //   }, {
-  //     tables: [],
-  //     errors: [],
-  //     warnings: [],
-  //     liveCollections: []
-  //   })
-  // }
 }
 

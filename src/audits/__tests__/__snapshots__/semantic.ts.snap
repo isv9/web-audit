@@ -14,6 +14,7 @@ Object {
   ],
   "warnings": Array [
     "Document does not have main tag",
+    "Document does not have header tag",
   ],
 }
 `;
@@ -49,6 +50,61 @@ Object {
     },
   ],
   "warnings": Array [],
+}
+`;
+
+exports[`auditHeaderSemantics document does not have any headers 1`] = `
+Object {
+  "errors": Array [
+    "Document must have one h1",
+  ],
+  "name": "header elements count in dom",
+  "tables": Array [
+    Object {
+      "h1": 0,
+      "h2": 0,
+      "h3": 0,
+      "h4": 0,
+      "h5": 0,
+      "h6": 0,
+    },
+  ],
+}
+`;
+
+exports[`auditHeaderSemantics document has some headers 1`] = `
+Object {
+  "errors": Array [],
+  "name": "header elements count in dom",
+  "tables": Array [
+    Object {
+      "h1": 1,
+      "h2": 2,
+      "h3": 3,
+      "h4": 4,
+      "h5": 5,
+      "h6": 6,
+    },
+  ],
+}
+`;
+
+exports[`auditHeaderSemantics document has two h1 1`] = `
+Object {
+  "errors": Array [
+    "Document must have one h1",
+  ],
+  "name": "header elements count in dom",
+  "tables": Array [
+    Object {
+      "h1": 2,
+      "h2": 0,
+      "h3": 0,
+      "h4": 0,
+      "h5": 0,
+      "h6": 0,
+    },
+  ],
 }
 `;
 
