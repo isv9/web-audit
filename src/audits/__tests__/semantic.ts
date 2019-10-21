@@ -74,17 +74,19 @@ describe('auditHeaderSemantics', () => {
 
 describe('auditBlocksSemantics', () => {
   it('document has good block semantic', () => {
-    const document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagNameCount'> = {
+    const document: Pick<WebDocument, 'getEmptyElementsByTagName'  | 'getElementsByTagName' | 'getElementsByTagNameCount'> = {
       getElementsByTagNameCount: jest.fn(() => 20),
       getEmptyElementsByTagName: jest.fn(() => ({ length: 0 })),
+      getElementsByTagName: jest.fn(() => ({ length: 7 })),
     };
     expect(auditBlockSemantics(document)).toMatchSnapshot();
   });
 
   it('document has divatos and empty articles', () => {
-    const document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagNameCount'> = {
+    const document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagName'  | 'getElementsByTagNameCount'> = {
       getElementsByTagNameCount: jest.fn(tag => (tag === 'div' ? 100 : 20)),
       getEmptyElementsByTagName: jest.fn(tag => ({ length: tag === 'article' ? 2 : 0 })),
+      getElementsByTagName: jest.fn(() => ({ length: 7 })),
     };
     expect(auditBlockSemantics(document)).toMatchSnapshot();
   });

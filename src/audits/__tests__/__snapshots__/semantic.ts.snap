@@ -10,6 +10,14 @@ Object {
       "name": "Empty \\"article\\" elements count in dom",
     },
   ],
+  "logs": Array [
+    Array [
+      "buttons",
+      Object {
+        "length": 7,
+      },
+    ],
+  ],
   "name": "block elements count in dom",
   "tables": Array [
     Object {
@@ -35,6 +43,14 @@ Object {
 exports[`auditBlocksSemantics document has good block semantic 1`] = `
 Object {
   "liveCollections": Array [],
+  "logs": Array [
+    Array [
+      "buttons",
+      Object {
+        "length": 7,
+      },
+    ],
+  ],
   "name": "block elements count in dom",
   "tables": Array [
     Object {
@@ -69,6 +85,7 @@ Object {
   "warnings": Array [
     "Document does not have main tag",
     "Document does not have header tag",
+    "Document does not have nav tag",
   ],
 }
 `;

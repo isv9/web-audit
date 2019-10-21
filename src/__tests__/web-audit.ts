@@ -5,7 +5,7 @@ describe('web-audit', () => {
     name: 'test audit result name',
     errors: ['e1'],
     warnings: ['w1', 'w2'],
-    logs: ['l1', 'l2', 'l3'],
+    logs: ['l1', 'l2', ['l3', {length: 55}]],
     tables: [],
   };
   it('getAuditResultMessagesCount', () => {

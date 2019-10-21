@@ -11,5 +11,8 @@ const webAudit = new WebAudit({
   getEmptyElementsByTagName(tag: string): { length: number } {
     return document.querySelectorAll(`${tag}:empty`);
   },
+  getElementsByTagName(tag: string): { length: number } {
+    return document.getElementsByTagName(tag)
+  }
 });
 webAudit.audit();

@@ -6,10 +6,11 @@ import {
 } from './audits/semantic';
 import { auditLinks } from './audits/links';
 import { auditImagesAndMultimedia } from './audits/imagesAndMultimedia';
-import {auditDeprecatedTags} from "./audits/deprecated-tags";
+import { auditDeprecatedTags } from './audits/deprecated-tags';
 
 export type WebDocument = {
   getElementsByTagNameCount(tag: string): number;
+  getElementsByTagName(tag: string): { length: number };
   querySelectorAll(query: string): { length: number };
   getEmptyElementsByTagName(tag: string): { length: number };
 };
@@ -23,11 +24,12 @@ export type AuditResult = {
   name?: string;
   tables: (AuditResultTable)[];
   liveCollections?: (AuditResultLiveCollection)[];
-  logs?: string[];
+  logs?: AuditResultLog[];
   warnings?: string[];
   errors?: string[];
 };
 
+export type AuditResultLog = string | any[];
 type AuditResultTable = { name?: string } & { [key: string]: string | number };
 export type AuditResultLiveCollection = { name: string; collection: object };
 
@@ -124,7 +126,7 @@ export class WebAudit {
       console.log(name);
       console.log(collection);
     });
-    logs.forEach(message => console.log(message));
+    logs.forEach(log => (Array.isArray(log) ? console.log(...log) : console.log(log)));
     console.log('Summary');
     if (errorsCount > 0 || warningsCount > 0) {
       errors.forEach(message => console.error(message));
