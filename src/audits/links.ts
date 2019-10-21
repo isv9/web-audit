@@ -1,13 +1,14 @@
-import { AuditResult, WebDocument } from '../web-audit';
+import { AuditResult, AuditResultLog, WebDocument } from '../web-audit';
 import { getEmptyElementsLiveCollections } from './utils';
 
 export function auditLinks(
-  document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagNameCount'>,
+  document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagName'>,
 ): AuditResult {
-  const linksElements = {
-    a: document.getElementsByTagNameCount('a'),
-  };
-  const logs: string[] = [`Document has ${linksElements.a} links`];
+  const linksElements = document.getElementsByTagName('a');
+  const logs: AuditResultLog[] = [];
+  if (linksElements.length > 0) {
+    logs.push([`Document has ${linksElements.length} links`, linksElements]);
+  }
   const warnings: string[] = [];
 
   const emptyElementsLiveCollections = getEmptyElementsLiveCollections(document, ['a']);

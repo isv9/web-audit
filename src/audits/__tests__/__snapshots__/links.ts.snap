@@ -11,7 +11,12 @@ Object {
     },
   ],
   "logs": Array [
-    "Document has 3 links",
+    Array [
+      "Document has 3 links",
+      Object {
+        "length": 3,
+      },
+    ],
   ],
   "name": "links in dom",
   "tables": Array [],
@@ -25,7 +30,12 @@ exports[`auditLinks document is ok 1`] = `
 Object {
   "liveCollections": Array [],
   "logs": Array [
-    "Document has 3 links",
+    Array [
+      "Document has 3 links",
+      Object {
+        "length": 3,
+      },
+    ],
   ],
   "name": "links in dom",
   "tables": Array [],
