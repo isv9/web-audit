@@ -11,15 +11,15 @@ export function auditLinks(
   }
   const warnings: string[] = [];
 
-  const emptyElementsLiveCollections = getEmptyElementsLiveCollections(document, ['a']);
-  if (emptyElementsLiveCollections.length > 0) {
+  const emptyElementsLogs = getEmptyElementsLiveCollections(document, ['a']);
+  if (emptyElementsLogs.length > 0) {
     warnings.push('Document has empty links');
+    logs.push(emptyElementsLogs);
   }
 
   return {
     logs,
     warnings,
-    liveCollections: emptyElementsLiveCollections,
     name: 'links in dom',
     tables: [],
   };

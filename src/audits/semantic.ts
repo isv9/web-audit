@@ -1,4 +1,4 @@
-import {AuditResult, AuditResultLog, WebDocument} from '../web-audit';
+import { AuditResult, AuditResultLog, WebDocument } from '../web-audit';
 import { getEmptyElementsLiveCollections } from './utils';
 
 const commonTagsNames: string[] = ['nav', 'header', 'main', 'footer'];
@@ -119,7 +119,10 @@ export function auditHeaderSemantics(
 }
 
 export function auditBlockSemantics(
-  document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getElementsByTagNameCount'>,
+  document: Pick<
+    WebDocument,
+    'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getElementsByTagNameCount'
+  >,
 ): AuditResult {
   const blockElements = Object.fromEntries(
     blockTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
@@ -128,21 +131,19 @@ export function auditBlockSemantics(
   if (checkDivatos(blockElements)) {
     warnings.push('Document has much div');
   }
-
-  const emptyElementsLiveCollections = getEmptyElementsLiveCollections(document, blockTagsNames);
-  if (emptyElementsLiveCollections.length > 0) {
-    warnings.push('Document has empty blocks');
-  }
-
   const logs: AuditResultLog[] = [];
-  if(blockElements.button > 0){
+  const emptyElementsLogs = getEmptyElementsLiveCollections(document, blockTagsNames);
+  if (emptyElementsLogs.length > 0) {
+    warnings.push('Document has empty blocks');
+    logs.push(emptyElementsLogs);
+  }
+  if (blockElements.button > 0) {
     logs.push(['buttons', document.getElementsByTagName('button')]);
   }
 
   return {
     warnings,
     logs,
-    liveCollections: emptyElementsLiveCollections,
     name: 'block elements count in dom',
     tables: [
       {

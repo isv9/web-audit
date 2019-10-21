@@ -23,7 +23,6 @@ type AuditSectionResult = {
 export type AuditResult = {
   name?: string;
   tables: (AuditResultTable)[];
-  liveCollections?: (AuditResultLiveCollection)[];
   logs?: AuditResultLog[];
   warnings?: string[];
   errors?: string[];
@@ -31,7 +30,6 @@ export type AuditResult = {
 
 export type AuditResultLog = string | any[];
 type AuditResultTable = { name?: string } & { [key: string]: string | number };
-export type AuditResultLiveCollection = { name: string; collection: object };
 
 export class WebAudit {
   private readonly webDocument: WebDocument;
@@ -110,7 +108,6 @@ export class WebAudit {
       tables,
       errors = [],
       warnings = [],
-      liveCollections = [],
       logs = [],
     } = auditResult;
     const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
@@ -121,10 +118,6 @@ export class WebAudit {
         console.log(name);
       }
       console.table(tableDataSet);
-    });
-    liveCollections.forEach(({ name, collection }) => {
-      console.log(name);
-      console.log(collection);
     });
     logs.forEach(log => (Array.isArray(log) ? console.log(...log) : console.log(log)));
     console.log('Summary');
