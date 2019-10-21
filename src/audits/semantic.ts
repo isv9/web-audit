@@ -3,24 +3,22 @@ import { getEmptyElementsLiveCollections } from './utils';
 
 const commonTagsNames: string[] = ['nav', 'header', 'main', 'footer'];
 
-const textTagsNames: string[] = [
-  'label',
+const textTagsNames: string[] = ['blockquote', 'dd', 'dir', 'dl', 'dt', 'pre'];
+
+const textSemanticTagsNames: string[] = [
   'span',
   'p',
   'b',
   'i',
+  'small',
   'code',
   'strong',
   'time',
   'em',
-  'blockquote',
+  'abbr',
   'cite',
-  'dir',
-  'dd',
-  'dl',
-  'dt',
-  'pre',
 ];
+
 const headerTagsNames: string[] = Array.from(new Array(6)).map((_, index) => `h${index + 1}`);
 const blockTagsNames: string[] = [
   'div',
@@ -65,11 +63,30 @@ export function auditTextSemantics(
   const textElements = Object.fromEntries(
     textTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
   );
+  const textSemanticElements = Object.fromEntries(
+    textSemanticTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
+  );
+
+  const isExistSomeTextOrTextSemanticTag = Object.values({
+    ...textElements,
+    ...textSemanticElements,
+  }).some(tagsAmount => tagsAmount > 0);
+  const errors: string[] = [];
+  if (!isExistSomeTextOrTextSemanticTag) {
+    errors.push('Document does not any text tag');
+  }
+
   return {
     name: 'text elements count in dom',
+    errors,
     tables: [
       {
+        name: 'text elements',
         ...textElements,
+      },
+      {
+        name: 'text semantic elements',
+        ...textSemanticElements,
       },
     ],
   };

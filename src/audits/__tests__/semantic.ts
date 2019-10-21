@@ -36,6 +36,13 @@ it('auditTextSemantics', () => {
   expect(auditTextSemantics(document)).toMatchSnapshot();
 });
 
+it('document does not any text tag', () => {
+  const document: Pick<WebDocument, 'getElementsByTagNameCount'> = {
+    getElementsByTagNameCount: jest.fn(() => 0),
+  };
+  expect(auditTextSemantics(document)).toMatchSnapshot();
+});
+
 describe('auditHeaderSemantics', () => {
   it('document has some headers', () => {
     let inc = 0;

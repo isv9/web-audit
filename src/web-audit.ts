@@ -86,7 +86,7 @@ export class WebAudit {
       details.errorsCount += errorsCount;
       details.warningsCount += warningsCount;
     });
-    console.group(
+    console.groupCollapsed(
       `${name}, (errors="${details.errorsCount}", warnings="${details.warningsCount}")`,
     );
     auditResults.forEach(auditResult => WebAudit.renderAuditResult(auditResult));
@@ -104,7 +104,7 @@ export class WebAudit {
     } = auditResult;
     const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
     const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings');
-    console.group(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`);
+    console.groupCollapsed(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`);
     tables.forEach(({ name, nodes, ...tableDataSet }) => {
       if (name) {
         console.log(name);
