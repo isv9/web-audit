@@ -1,4 +1,5 @@
 import { auditBlockSemantics, auditCommonSemantics, auditHeaderSemantics, auditTextSemantics } from './audits/semantic'
+import { auditLinks } from './audits/links'
 
 export type WebDocument = {
   getElementsByTagNameCount (tag: string): number;
@@ -33,32 +34,20 @@ export class WebAudit {
 
   audit () {
     const auditSemanticsResult = this.auditSemantics()
-    // const auditLinksResult = this.auditLinks()
+    const auditLinksResult = this.auditLinks()
     console.group('web audit')
     WebAudit.renderAuditSectionResult(auditSemanticsResult)
-    // WebAudit.renderAuditResult(auditLinksResult)
+    WebAudit.renderAuditSectionResult(auditLinksResult)
     console.groupEnd()
   }
 
-  // private auditLinks (): AuditSectionResult {
-  //   const liveCollections: AuditResultLiveCollection[] = []
-  //   const emptyLinks = document.querySelectorAll('a:empty')
-  //
-  //   const warnings: string[] = []
-  //   if (emptyLinks.length > 0) {
-  //     warnings.push('Document has empty links')
-  //     liveCollections.push({
-  //       name: 'empty links',
-  //       collection: emptyLinks
-  //     })
-  //   }
-  //   return {
-  //     name: 'links',
-  //     tables: [],
-  //     liveCollections,
-  //     warnings
-  //   }
-  // }
+  private auditLinks (): AuditSectionResult {
+    return {
+      name: 'links',
+      auditResults: [
+        auditLinks(this.webDocument)]
+    }
+  }
 
   private auditSemantics (): AuditSectionResult {
 

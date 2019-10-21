@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auditLinks document has some empty links 1`] = `
+Object {
+  "liveCollections": Array [
+    Object {
+      "collection": Object {
+        "length": 5,
+      },
+      "name": "Empty \\"a\\" elements count in dom",
+    },
+  ],
+  "logs": Array [
+    "Document has 3 links",
+  ],
+  "name": "links in dom",
+  "tables": Array [],
+  "warnings": Array [
+    "Document has empty links",
+  ],
+}
+`;
+
+exports[`auditLinks document is ok 1`] = `
+Object {
+  "liveCollections": Array [],
+  "logs": Array [
+    "Document has 3 links",
+  ],
+  "name": "links in dom",
+  "tables": Array [],
+  "warnings": Array [],
+}
+`;
