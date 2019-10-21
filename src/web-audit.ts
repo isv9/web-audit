@@ -1,7 +1,9 @@
-import { auditCommonSemantics, auditHeaderSemantics, auditTextSemantics } from './audits/semantic'
+import { auditBlockSemantics, auditCommonSemantics, auditHeaderSemantics, auditTextSemantics } from './audits/semantic'
 
 export type WebDocument = {
   getElementsByTagNameCount (tag: string): number;
+  querySelectorAll (query: string): { length: number };
+  getEmptyElementsByTagName (tag: string): { length: number }
 };
 
 type AuditSectionResult = {
@@ -19,11 +21,10 @@ export type AuditResult = {
 };
 
 type AuditResultTable = { name?: string } & { [key: string]: string | number };
-type AuditResultLiveCollection = { name: string, collection: object };
+export type AuditResultLiveCollection = { name: string, collection: object };
 
 export class WebAudit {
 
-  private readonly blockTagsNames: string[] = ['div', 'section', 'article']
   private readonly webDocument: WebDocument
 
   constructor (webDocument: WebDocument) {
@@ -65,56 +66,9 @@ export class WebAudit {
       name: 'semantics',
       auditResults: [auditCommonSemantics(this.webDocument),
         auditHeaderSemantics(this.webDocument),
-        auditTextSemantics(this.webDocument)]
-      // ...WebAudit.mergeAuditResult(this.auditCommonSemantics(),
-      //   this.auditHeaderSemantics(),
-      //   this.auditTextSemantics(),
-      //   this.auditBlockSemantics())
+        auditTextSemantics(this.webDocument),
+        auditBlockSemantics(this.webDocument)]
     }
-  }
-
-  private auditBlockSemantics (): AuditResult {
-    const blockElements = Object.fromEntries(
-      this.blockTagsNames.map(tag => [
-        tag,
-        WebAudit.getElementsByTagNameCount(tag)
-      ])
-    )
-    const warnings: string[] = []
-    const divCount = blockElements['div']
-    const articlePart = (100 * blockElements['article']) / divCount
-    const sectionPart = (100 * blockElements['section']) / divCount
-    if (articlePart + sectionPart < 90) {
-      warnings.push('Document has much div')
-    }
-
-    const emptyElementsLiveCollections = this.blockTagsNames.reduce<AuditResultLiveCollection[]>((liveCollections, tag) => {
-      const emptyElements = document.querySelectorAll(`${tag}:empty`)
-      if (emptyElements.length > 0) {
-        liveCollections.push({
-          name: `Empty "${tag}" elements count in dom`,
-          collection: emptyElements
-        })
-      }
-      return liveCollections
-    }, [])
-    if (emptyElementsLiveCollections.length > 0) {
-      warnings.push('Document has empty blocks')
-    }
-
-    return {
-      warnings,
-      liveCollections: emptyElementsLiveCollections,
-      tables: [{
-        name: 'block elements count in dom',
-        ...blockElements
-      }
-      ]
-    }
-  }
-
-  static getElementsByTagNameCount (tag: string): number {
-    return document.getElementsByTagName(tag).length
   }
 
   static renderAuditSectionResult (auditSectionResult: AuditSectionResult) {

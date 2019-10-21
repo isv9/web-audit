@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getEmptyElementsLiveCollections document does not have any empty elements 1`] = `Array []`;
+
+exports[`getEmptyElementsLiveCollections document has some empty div elements 1`] = `
+Array [
+  Object {
+    "collection": Object {
+      "length": 5,
+    },
+    "name": "Empty \\"div\\" elements count in dom",
+  },
+]
+`;

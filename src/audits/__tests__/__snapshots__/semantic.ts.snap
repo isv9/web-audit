@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`auditBlocksSemantics document has divatos and empty articles 1`] = `
+Object {
+  "liveCollections": Array [
+    Object {
+      "collection": Object {
+        "length": 2,
+      },
+      "name": "Empty \\"article\\" elements count in dom",
+    },
+  ],
+  "name": "block elements count in dom",
+  "tables": Array [
+    Object {
+      "article": 20,
+      "div": 100,
+      "section": 20,
+    },
+  ],
+  "warnings": Array [
+    "Document has much div",
+    "Document has empty blocks",
+  ],
+}
+`;
+
+exports[`auditBlocksSemantics document has good block semantic 1`] = `
+Object {
+  "liveCollections": Array [],
+  "name": "block elements count in dom",
+  "tables": Array [
+    Object {
+      "article": 20,
+      "div": 20,
+      "section": 20,
+    },
+  ],
+  "warnings": Array [],
+}
+`;
+
 exports[`auditCommonSemantics document does not have any common tag 1`] = `
 Object {
   "errors": Array [],

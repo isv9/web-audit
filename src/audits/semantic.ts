@@ -1,4 +1,5 @@
 import { AuditResult, WebDocument } from '../web-audit'
+import { getEmptyElementsLiveCollections } from './utils'
 
 const commonTagsNames: string[] = [
   'nav',
@@ -11,8 +12,9 @@ const textTagsNames: string[] = ['label', 'span', 'p']
 const headerTagsNames: string[] = Array.from(new Array(6)).map(
   (_, index) => `h${index + 1}`
 )
+const blockTagsNames: string[] = ['div', 'section', 'article']
 
-export function auditCommonSemantics (document: WebDocument): AuditResult {
+export function auditCommonSemantics (document: Pick<WebDocument, 'getElementsByTagNameCount'>): AuditResult {
   const commonElements = Object.fromEntries(
     commonTagsNames.map(tag => [
       tag,
@@ -39,7 +41,7 @@ export function auditCommonSemantics (document: WebDocument): AuditResult {
   }
 }
 
-export function auditTextSemantics (document: WebDocument): AuditResult {
+export function auditTextSemantics (document: Pick<WebDocument, 'getElementsByTagNameCount'>): AuditResult {
   const textElements = Object.fromEntries(
     textTagsNames.map(tag => [
       tag,
@@ -54,7 +56,7 @@ export function auditTextSemantics (document: WebDocument): AuditResult {
   }
 }
 
-export function auditHeaderSemantics (document: WebDocument): AuditResult {
+export function auditHeaderSemantics (document: Pick<WebDocument, 'getElementsByTagNameCount'>): AuditResult {
   const headerElements = Object.fromEntries(
     headerTagsNames.map(tag => [
       tag,
@@ -73,3 +75,39 @@ export function auditHeaderSemantics (document: WebDocument): AuditResult {
     },]
   }
 }
+
+export function auditBlockSemantics (document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagNameCount'>): AuditResult {
+  const blockElements = Object.fromEntries(
+    blockTagsNames.map(tag => [
+      tag,
+      document.getElementsByTagNameCount(tag)
+    ])
+  )
+  const warnings: string[] = []
+  if (checkDivatos(blockElements)) {
+    warnings.push('Document has much div')
+  }
+
+  const emptyElementsLiveCollections = getEmptyElementsLiveCollections(document, blockTagsNames)
+  if (emptyElementsLiveCollections.length > 0) {
+    warnings.push('Document has empty blocks')
+  }
+
+  return {
+    warnings,
+    liveCollections: emptyElementsLiveCollections,
+    name: 'block elements count in dom',
+    tables: [{
+      ...blockElements
+    }
+    ]
+  }
+}
+
+function checkDivatos (blockElements: { [tag: string]: number }): boolean {
+  const divCount = blockElements['div']
+  const articlePart = (100 * blockElements['article']) / divCount
+  const sectionPart = (100 * blockElements['section']) / divCount
+  return articlePart + sectionPart < 90
+}
+
