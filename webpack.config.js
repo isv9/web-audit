@@ -15,7 +15,7 @@ module.exports = {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
   output: {
-    filename: 'main.js',
+    filename: 'web-audit.js',
     path: path.resolve(__dirname, 'dist'),
   },
 };
