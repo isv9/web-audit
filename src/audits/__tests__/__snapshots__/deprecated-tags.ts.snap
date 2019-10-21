@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auditDeprecatedTags document does not have any deprecated tags 1`] = `
+Object {
+  "errors": Array [],
+  "name": "deprecated elements in dom",
+  "tables": Array [
+    Object {
+      "acronym": 0,
+      "big": 0,
+      "command": 0,
+      "content": 0,
+      "dir": 0,
+      "element": 0,
+      "font": 0,
+      "menuitem": 0,
+    },
+  ],
+}
+`;
+
+exports[`auditDeprecatedTags document has some deprecated tags 1`] = `
+Object {
+  "errors": Array [
+    "Document has some deprecated tag",
+  ],
+  "name": "deprecated elements in dom",
+  "tables": Array [
+    Object {
+      "acronym": 1,
+      "big": 1,
+      "command": 1,
+      "content": 1,
+      "dir": 1,
+      "element": 1,
+      "font": 1,
+      "menuitem": 1,
+    },
+  ],
+}
+`;

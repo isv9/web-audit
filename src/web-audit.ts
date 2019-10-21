@@ -6,6 +6,7 @@ import {
 } from './audits/semantic';
 import { auditLinks } from './audits/links';
 import { auditImagesAndMultimedia } from './audits/imagesAndMultimedia';
+import {auditDeprecatedTags} from "./audits/deprecated-tags";
 
 export type WebDocument = {
   getElementsByTagNameCount(tag: string): number;
@@ -38,13 +39,14 @@ export class WebAudit {
   }
 
   audit() {
-    const auditSemanticsResult = this.auditSemantics();
-    const auditLinksResult = this.auditLinks();
-    const auditImagesResult = this.imagesLinks();
+    const auditResults: AuditSectionResult[] = [
+      this.auditSemantics(),
+      this.auditLinks(),
+      this.auditImages(),
+      this.auditDeprecatedTags(),
+    ];
     console.group('web audit');
-    WebAudit.renderAuditSectionResult(auditSemanticsResult);
-    WebAudit.renderAuditSectionResult(auditLinksResult);
-    WebAudit.renderAuditSectionResult(auditImagesResult);
+    auditResults.forEach(WebAudit.renderAuditSectionResult);
     console.groupEnd();
   }
 
@@ -55,10 +57,17 @@ export class WebAudit {
     };
   }
 
-  private imagesLinks(): AuditSectionResult {
+  private auditImages(): AuditSectionResult {
     return {
       name: 'images and multimedia',
       auditResults: [auditImagesAndMultimedia(this.webDocument)],
+    };
+  }
+
+  private auditDeprecatedTags(): AuditSectionResult {
+    return {
+      name: 'deprecated tags',
+      auditResults: [auditDeprecatedTags(this.webDocument)],
     };
   }
 
