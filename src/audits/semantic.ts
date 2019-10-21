@@ -46,7 +46,7 @@ export function auditCommonSemantics(
       warnings.push('Document does not have main tag');
     }
   }
-  if (commonElements.header !== 1) {
+  if (commonElements.header < 1) {
     warnings.push('Document does not have header tag');
   }
   return {

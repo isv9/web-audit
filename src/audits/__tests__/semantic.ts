@@ -20,6 +20,13 @@ describe('auditCommonSemantics', () => {
     expect(auditCommonSemantics(document)).toMatchSnapshot();
   });
 
+  it('document has two header tags', () => {
+    const document: Pick<WebDocument, 'getElementsByTagNameCount'> = {
+      getElementsByTagNameCount: jest.fn(tag => (tag === 'header' ? 2 : 1)),
+    };
+    expect(auditCommonSemantics(document)).toMatchSnapshot();
+  });
+
   it('document does not have any common tag', () => {
     const document: Pick<WebDocument, 'getElementsByTagNameCount'> = {
       getElementsByTagNameCount: jest.fn(() => 0),

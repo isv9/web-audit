@@ -85,6 +85,22 @@ Object {
 }
 `;
 
+exports[`auditCommonSemantics document has two header tags 1`] = `
+Object {
+  "errors": Array [],
+  "name": "common elements count in dom",
+  "tables": Array [
+    Object {
+      "footer": 1,
+      "header": 2,
+      "main": 1,
+      "nav": 1,
+    },
+  ],
+  "warnings": Array [],
+}
+`;
+
 exports[`auditCommonSemantics document has two main tags 1`] = `
 Object {
   "errors": Array [
