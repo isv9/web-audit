@@ -2,15 +2,15 @@
 
 exports[`auditBlocksSemantics document has divatos and empty articles 1`] = `
 Object {
-  "liveCollections": Array [
-    Object {
-      "collection": Object {
-        "length": 2,
-      },
-      "name": "Empty \\"article\\" elements count in dom",
-    },
-  ],
   "logs": Array [
+    Array [
+      Array [
+        "Empty \\"article\\" elements count in dom",
+        Object {
+          "length": 2,
+        },
+      ],
+    ],
     Array [
       "buttons",
       Object {
@@ -42,7 +42,6 @@ Object {
 
 exports[`auditBlocksSemantics document has good block semantic 1`] = `
 Object {
-  "liveCollections": Array [],
   "logs": Array [
     Array [
       "buttons",

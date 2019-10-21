@@ -2,20 +2,20 @@
 
 exports[`auditLinks document has some empty links 1`] = `
 Object {
-  "liveCollections": Array [
-    Object {
-      "collection": Object {
-        "length": 5,
-      },
-      "name": "Empty \\"a\\" elements count in dom",
-    },
-  ],
   "logs": Array [
     Array [
       "Document has 3 links",
       Object {
         "length": 3,
       },
+    ],
+    Array [
+      Array [
+        "Empty \\"a\\" elements count in dom",
+        Object {
+          "length": 5,
+        },
+      ],
     ],
   ],
   "name": "links in dom",
@@ -28,7 +28,6 @@ Object {
 
 exports[`auditLinks document is ok 1`] = `
 Object {
-  "liveCollections": Array [],
   "logs": Array [
     Array [
       "Document has 3 links",
