@@ -51,6 +51,9 @@ export function auditCommonSemantics(
   if (commonElements.header < 1) {
     warnings.push('Document does not have header tag');
   }
+  if (commonElements.nav < 1) {
+    warnings.push('Document does not have nav tag');
+  }
   return {
     name: 'common elements count in dom',
     tables: [commonElements],
