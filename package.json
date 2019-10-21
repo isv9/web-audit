@@ -12,7 +12,7 @@
     "url": "git+https://github.com/isv9/web-audit.git"
   },
   "keywords": [
-    "wrb-audit"
+    "web-audit"
   ],
   "author": "isv9",
   "license": "MIT",
