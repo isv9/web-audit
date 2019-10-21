@@ -5,7 +5,7 @@ import {
   auditTextSemantics,
 } from './audits/semantic';
 import { auditLinks } from './audits/links';
-import { auditImages } from './audits/images';
+import { auditImagesAndMultimedia } from './audits/imagesAndMultimedia';
 
 export type WebDocument = {
   getElementsByTagNameCount(tag: string): number;
@@ -57,8 +57,8 @@ export class WebAudit {
 
   private imagesLinks(): AuditSectionResult {
     return {
-      name: 'images',
-      auditResults: [auditImages(this.webDocument)],
+      name: 'images and multimedia',
+      auditResults: [auditImagesAndMultimedia(this.webDocument)],
     };
   }
 

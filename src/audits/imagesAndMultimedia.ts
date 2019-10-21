@@ -1,12 +1,12 @@
 import { AuditResult, WebDocument } from '../web-audit';
 
-const imagesTagsNames: string[] = ['picture', 'source', 'img', 'image', 'video', 'map'];
+const imagesAndMultimediaTagsNames: string[] = ['picture', 'source', 'img', 'image', 'video', 'map', 'canvas'];
 
-export function auditImages(
+export function auditImagesAndMultimedia(
   document: Pick<WebDocument, 'querySelectorAll' | 'getElementsByTagNameCount'>,
 ): AuditResult {
   const linksElements = Object.fromEntries(
-    imagesTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
+      imagesAndMultimediaTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
   );
   const imagesWithSrcsetTagCount = document.querySelectorAll('img[srcset]').length;
   const logs: string[] = [`Document has ${imagesWithSrcsetTagCount} img with srcset attribute`];
@@ -24,7 +24,7 @@ export function auditImages(
   return {
     logs,
     errors,
-    name: 'images in dom',
+    name: 'images and multimedia in dom',
     tables: [linksElements],
   };
 }

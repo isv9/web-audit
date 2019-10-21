@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`auditImages document has image tag 1`] = `
+exports[`auditImagesAndMultimedia document has image tag 1`] = `
 Object {
   "errors": Array [
     "Tag image is deprecated",
@@ -9,9 +9,10 @@ Object {
     "Document has 1 img with srcset attribute",
     "Document has some flexible images",
   ],
-  "name": "images in dom",
+  "name": "images and multimedia in dom",
   "tables": Array [
     Object {
+      "canvas": 3,
       "image": 1,
       "img": 3,
       "map": 3,
@@ -23,7 +24,7 @@ Object {
 }
 `;
 
-exports[`auditImages document has not flexible images 1`] = `
+exports[`auditImagesAndMultimedia document has not flexible images 1`] = `
 Object {
   "errors": Array [
     "Document does not have any flexible images",
@@ -31,9 +32,10 @@ Object {
   "logs": Array [
     "Document has 0 img with srcset attribute",
   ],
-  "name": "images in dom",
+  "name": "images and multimedia in dom",
   "tables": Array [
     Object {
+      "canvas": 0,
       "image": 0,
       "img": 10,
       "map": 0,
@@ -45,16 +47,17 @@ Object {
 }
 `;
 
-exports[`auditImages document is ok 1`] = `
+exports[`auditImagesAndMultimedia document is ok 1`] = `
 Object {
   "errors": Array [],
   "logs": Array [
     "Document has 1 img with srcset attribute",
     "Document has some flexible images",
   ],
-  "name": "images in dom",
+  "name": "images and multimedia in dom",
   "tables": Array [
     Object {
+      "canvas": 3,
       "image": 0,
       "img": 3,
       "map": 3,
