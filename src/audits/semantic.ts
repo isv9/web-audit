@@ -3,7 +3,7 @@ import { getEmptyElementsLiveCollections } from './utils';
 
 const commonTagsNames: string[] = ['nav', 'header', 'main', 'footer'];
 
-const textTagsNames: string[] = ['blockquote', 'dd', 'dir', 'dl', 'dt', 'pre'];
+const textTagsNames: string[] = ['blockquote', 'dd', 'dl', 'dt', 'pre'];
 
 const textSemanticTagsNames: string[] = [
   'span',
@@ -29,6 +29,8 @@ const blockTagsNames: string[] = [
   'ul',
   'details',
   'summary',
+  'form',
+  'button',
 ];
 
 export function auditCommonSemantics(
