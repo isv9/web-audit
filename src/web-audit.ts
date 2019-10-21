@@ -1,5 +1,6 @@
 import { auditBlockSemantics, auditCommonSemantics, auditHeaderSemantics, auditTextSemantics } from './audits/semantic'
 import { auditLinks } from './audits/links'
+import { auditImages } from './audits/images'
 
 export type WebDocument = {
   getElementsByTagNameCount (tag: string): number;
@@ -35,9 +36,11 @@ export class WebAudit {
   audit () {
     const auditSemanticsResult = this.auditSemantics()
     const auditLinksResult = this.auditLinks()
+    const auditImagesResult = this.imagesLinks()
     console.group('web audit')
     WebAudit.renderAuditSectionResult(auditSemanticsResult)
     WebAudit.renderAuditSectionResult(auditLinksResult)
+    WebAudit.renderAuditSectionResult(auditImagesResult)
     console.groupEnd()
   }
 
@@ -46,6 +49,14 @@ export class WebAudit {
       name: 'links',
       auditResults: [
         auditLinks(this.webDocument)]
+    }
+  }
+
+  private imagesLinks (): AuditSectionResult {
+    return {
+      name: 'images',
+      auditResults: [
+        auditImages(this.webDocument)]
     }
   }
 
@@ -83,7 +94,9 @@ export class WebAudit {
     const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings')
     console.group(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`)
     tables.forEach(({ name, nodes, ...tableDataSet }) => {
-      console.log(name)
+      if (name) {
+        console.log(name)
+      }
       console.table(tableDataSet)
     })
     liveCollections.forEach(({ name, collection }) => {

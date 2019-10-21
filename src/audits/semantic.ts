@@ -8,7 +8,7 @@ const commonTagsNames: string[] = [
   'footer'
 ]
 
-const textTagsNames: string[] = ['label', 'span', 'p']
+const textTagsNames: string[] = ['label', 'span', 'p', 'b']
 const headerTagsNames: string[] = Array.from(new Array(6)).map(
   (_, index) => `h${index + 1}`
 )

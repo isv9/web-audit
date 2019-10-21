@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auditImages document has image tag 1`] = `
+Object {
+  "errors": Array [
+    "Tag image is deprecated",
+  ],
+  "logs": Array [
+    "Document has 1 img with srcset attribute",
+    "Document has some flexible images",
+  ],
+  "name": "images in dom",
+  "tables": Array [
+    Object {
+      "image": 1,
+      "img": 3,
+      "picture": 3,
+      "source": 3,
+    },
+  ],
+}
+`;
+
+exports[`auditImages document has not flexible images 1`] = `
+Object {
+  "errors": Array [
+    "Document does not have any flexible images",
+  ],
+  "logs": Array [
+    "Document has 0 img with srcset attribute",
+  ],
+  "name": "images in dom",
+  "tables": Array [
+    Object {
+      "image": 0,
+      "img": 10,
+      "picture": 0,
+      "source": 0,
+    },
+  ],
+}
+`;
+
+exports[`auditImages document is ok 1`] = `
+Object {
+  "errors": Array [],
+  "logs": Array [
+    "Document has 1 img with srcset attribute",
+    "Document has some flexible images",
+  ],
+  "name": "images in dom",
+  "tables": Array [
+    Object {
+      "image": 0,
+      "img": 3,
+      "picture": 3,
+      "source": 3,
+    },
+  ],
+}
+`;
