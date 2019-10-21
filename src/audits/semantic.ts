@@ -8,11 +8,11 @@ const commonTagsNames: string[] = [
   'footer'
 ]
 
-const textTagsNames: string[] = ['label', 'span', 'p', 'b']
+const textTagsNames: string[] = ['label', 'span', 'p', 'b', 'i', 'code', 'strong', 'time', 'em', 'blockquote', 'cite', 'dir', 'dd', 'dl', 'dt', 'pre']
 const headerTagsNames: string[] = Array.from(new Array(6)).map(
   (_, index) => `h${index + 1}`
 )
-const blockTagsNames: string[] = ['div', 'section', 'article']
+const blockTagsNames: string[] = ['div', 'section', 'article', 'address', 'li', 'ul', 'details', 'summary']
 
 export function auditCommonSemantics (document: Pick<WebDocument, 'getElementsByTagNameCount'>): AuditResult {
   const commonElements = Object.fromEntries(

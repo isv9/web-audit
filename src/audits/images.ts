@@ -4,7 +4,9 @@ const imagesTagsNames: string[] = [
   'picture',
   'source',
   'img',
-  'image'
+  'image',
+  'video',
+  'map'
 ]
 
 export function auditImages (document: Pick<WebDocument, 'querySelectorAll' | 'getElementsByTagNameCount'>): AuditResult {

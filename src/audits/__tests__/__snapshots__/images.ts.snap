@@ -14,8 +14,10 @@ Object {
     Object {
       "image": 1,
       "img": 3,
+      "map": 3,
       "picture": 3,
       "source": 3,
+      "video": 3,
     },
   ],
 }
@@ -34,8 +36,10 @@ Object {
     Object {
       "image": 0,
       "img": 10,
+      "map": 0,
       "picture": 0,
       "source": 0,
+      "video": 0,
     },
   ],
 }
@@ -53,8 +57,10 @@ Object {
     Object {
       "image": 0,
       "img": 3,
+      "map": 3,
       "picture": 3,
       "source": 3,
+      "video": 3,
     },
   ],
 }

@@ -13,9 +13,14 @@ Object {
   "name": "block elements count in dom",
   "tables": Array [
     Object {
+      "address": 20,
       "article": 20,
+      "details": 20,
       "div": 100,
+      "li": 20,
       "section": 20,
+      "summary": 20,
+      "ul": 20,
     },
   ],
   "warnings": Array [
@@ -31,9 +36,14 @@ Object {
   "name": "block elements count in dom",
   "tables": Array [
     Object {
+      "address": 20,
       "article": 20,
+      "details": 20,
       "div": 20,
+      "li": 20,
       "section": 20,
+      "summary": 20,
+      "ul": 20,
     },
   ],
   "warnings": Array [],
@@ -153,9 +163,22 @@ Object {
   "name": "text elements count in dom",
   "tables": Array [
     Object {
+      "b": 4,
+      "blockquote": 10,
+      "cite": 11,
+      "code": 6,
+      "dd": 13,
+      "dir": 12,
+      "dl": 14,
+      "dt": 15,
+      "em": 9,
+      "i": 5,
       "label": 1,
       "p": 3,
+      "pre": 16,
       "span": 2,
+      "strong": 7,
+      "time": 8,
     },
   ],
 }
