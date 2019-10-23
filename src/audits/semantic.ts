@@ -3,13 +3,14 @@ import { getEmptyElementsLiveCollections } from './utils';
 
 const commonTagsNames: string[] = ['nav', 'header', 'main', 'footer'];
 
-const textTagsNames: string[] = ['blockquote', 'dd', 'dl', 'dt', 'pre'];
+const textTagsNames: string[] = ['span', 'b', 'i'];
 
 const textSemanticTagsNames: string[] = [
-  'span',
   'p',
-  'b',
-  'i',
+  'ul',
+  'ol',
+  'li',
+  'blockquote',
   'small',
   'code',
   'strong',
@@ -17,6 +18,10 @@ const textSemanticTagsNames: string[] = [
   'em',
   'abbr',
   'cite',
+  'dd',
+  'dl',
+  'dt',
+  'pre',
 ];
 
 const headerTagsNames: string[] = Array.from(new Array(6)).map((_, index) => `h${index + 1}`);
@@ -25,8 +30,6 @@ const blockTagsNames: string[] = [
   'section',
   'article',
   'address',
-  'li',
-  'ul',
   'details',
   'summary',
   'form',
