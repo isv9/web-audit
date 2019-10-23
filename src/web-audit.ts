@@ -7,6 +7,7 @@ import {
 import { auditLinks } from './audits/links';
 import { auditImagesAndMultimedia } from './audits/imagesAndMultimedia';
 import { auditDeprecatedTags } from './audits/deprecated-tags';
+import { auditOpenGraph } from './audits/seo';
 
 export type WebDocument = {
   getElementsByTagNameCount(tag: string): number;
@@ -44,6 +45,7 @@ export class WebAudit {
       this.auditLinks(),
       this.auditImages(),
       this.auditDeprecatedTags(),
+      this.auditSeo(),
     ];
     console.group('web audit');
     auditResults.forEach(WebAudit.renderAuditSectionResult);
@@ -83,6 +85,13 @@ export class WebAudit {
     };
   }
 
+  private auditSeo(): AuditSectionResult {
+    return {
+      name: 'SEO',
+      auditResults: [auditOpenGraph(this.webDocument)],
+    };
+  }
+
   static renderAuditSectionResult(auditSectionResult: AuditSectionResult) {
     const { name, auditResults } = auditSectionResult;
     const details = {
@@ -103,13 +112,7 @@ export class WebAudit {
   }
 
   static renderAuditResult(auditResult: AuditResult) {
-    const {
-      name,
-      tables,
-      errors = [],
-      warnings = [],
-      logs = [],
-    } = auditResult;
+    const { name, tables, errors = [], warnings = [], logs = [] } = auditResult;
     const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
     const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings');
     console.groupCollapsed(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`);

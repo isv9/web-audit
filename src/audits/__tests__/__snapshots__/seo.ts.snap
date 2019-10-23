@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auditOpenGraph createOpenGraphMetaPropertyQuerySelector 1`] = `"meta[property=\\"og:title\\"]"`;
+
+exports[`auditOpenGraph document has all Open Graph base tags 1`] = `
+Object {
+  "logs": Array [
+    "Document has some base meta tags: 'title, description, url'",
+  ],
+  "name": "Open Graph",
+  "tables": Array [],
+  "warnings": Array [],
+}
+`;
+
+exports[`auditOpenGraph document has only Open Graph title tag from base tags 1`] = `
+Object {
+  "logs": Array [
+    "Document has some base meta tags: 'title'",
+  ],
+  "name": "Open Graph",
+  "tables": Array [],
+  "warnings": Array [
+    "Document does not have a base meta tag 'og:description'",
+    "Document does not have a base meta tag 'og:url'",
+  ],
+}
+`;
