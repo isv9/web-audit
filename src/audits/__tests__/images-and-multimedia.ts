@@ -1,5 +1,5 @@
 import { WebDocument } from '../../web-audit';
-import { auditImagesAndMultimedia } from '../imagesAndMultimedia';
+import { auditImagesAndMultimedia } from '../images-and-multimedia';
 import { createGetTagAmountMapMock } from '../../tests-utils/mock';
 
 describe('auditImagesAndMultimedia', () => {

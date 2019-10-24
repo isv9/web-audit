@@ -5,7 +5,7 @@ import {
   auditTextSemantics,
 } from './audits/semantic';
 import { auditLinks } from './audits/links';
-import { auditImagesAndMultimedia } from './audits/imagesAndMultimedia';
+import { auditImagesAndMultimedia } from './audits/images-and-multimedia';
 import { auditDeprecatedTags } from './audits/deprecated-tags';
 import { auditOpenGraph } from './audits/seo';
 
