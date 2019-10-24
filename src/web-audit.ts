@@ -10,7 +10,7 @@ import { auditDeprecatedTags } from './audits/deprecated-tags';
 import { auditOpenGraph } from './audits/seo';
 
 export type WebDocument = {
-  getTagAmount (tagName: string): number;
+  getTagAmount(tagName: string): number;
   getTagAmountMap(tagsNames: string[]): TagAmountMap;
   getElementsByTagName(tagName: string): { length: number };
   querySelectorAll(querySelector: string): { length: number };
@@ -31,7 +31,7 @@ export type AuditResult = {
 };
 
 export type AuditResultLog = string | any[];
-type AuditResultTable = { name?: string, content: TagAmountMap};
+type AuditResultTable = { name?: string; content: TagAmountMap };
 export type TagAmountMap = { [tagName: string]: number };
 
 export class WebAudit {
@@ -118,7 +118,7 @@ export class WebAudit {
     const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
     const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings');
     console.groupCollapsed(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`);
-    tables.forEach(({ name, content}) => {
+    tables.forEach(({ name, content }) => {
       if (name) {
         console.log(name);
       }

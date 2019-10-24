@@ -5,7 +5,11 @@ type OpenGraphMetaPropertyName = BaseOpenGraphMetaPropertyName;
 type CheckedOpenGraphMetaTag = { propertyName: OpenGraphMetaPropertyName; isExisted: boolean };
 
 export function auditOpenGraph(document: Pick<WebDocument, 'querySelectorAll'>): AuditResult {
-  const baseOgMetaPropertiesNames: BaseOpenGraphMetaPropertyName[] = ['title', 'description', 'url'];
+  const baseOgMetaPropertiesNames: BaseOpenGraphMetaPropertyName[] = [
+    'title',
+    'description',
+    'url',
+  ];
   const checkedBaseOpenGraphMetaTags: CheckedOpenGraphMetaTag[] = baseOgMetaPropertiesNames.map(
     (propertyName): CheckedOpenGraphMetaTag => ({
       propertyName,
@@ -26,7 +30,9 @@ export function auditOpenGraph(document: Pick<WebDocument, 'querySelectorAll'>):
     const existedOpenGraphBaseMetaPropertiesNames = checkedBaseOpenGraphMetaTags
       .filter(({ isExisted }) => isExisted)
       .map(({ propertyName }) => propertyName);
-    logs.push(`Document has some base meta tags: '${existedOpenGraphBaseMetaPropertiesNames.join(', ')}'`);
+    logs.push(
+      `Document has some base meta tags: '${existedOpenGraphBaseMetaPropertiesNames.join(', ')}'`,
+    );
   }
 
   return {
@@ -41,9 +47,14 @@ function checkExistOpenGraphMetaTag(
   document: Pick<WebDocument, 'querySelectorAll'>,
   ogMetaPropertyName: OpenGraphMetaPropertyName,
 ): boolean {
-  return document.querySelectorAll(createOpenGraphMetaPropertyQuerySelector(ogMetaPropertyName)).length > 0;
+  return (
+    document.querySelectorAll(createOpenGraphMetaPropertyQuerySelector(ogMetaPropertyName)).length >
+    0
+  );
 }
 
-export function createOpenGraphMetaPropertyQuerySelector(ogMetaPropertyName: OpenGraphMetaPropertyName): string {
+export function createOpenGraphMetaPropertyQuerySelector(
+  ogMetaPropertyName: OpenGraphMetaPropertyName,
+): string {
   return `meta[property="og:${ogMetaPropertyName}"]`;
 }
