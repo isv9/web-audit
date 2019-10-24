@@ -1,5 +1,5 @@
 import { AuditResult, AuditResultLog, WebDocument } from '../web-audit';
-import { getEmptyElementsLiveCollections } from './utils';
+import { getLogsForEmptyElements } from './utils';
 
 export function auditLinks(
   document: Pick<WebDocument, 'getEmptyElementsByTagName' | 'getElementsByTagName'>,
@@ -11,10 +11,10 @@ export function auditLinks(
   }
   const warnings: string[] = [];
 
-  const emptyElementsLogs = getEmptyElementsLiveCollections(document, ['a']);
-  if (emptyElementsLogs.length > 0) {
+  const logsForEmptyLinks = getLogsForEmptyElements(document, ['a']);
+  if (logsForEmptyLinks.length > 0) {
     warnings.push('Document has empty links');
-    logs.push(emptyElementsLogs);
+    logs.push(logsForEmptyLinks);
   }
 
   return {

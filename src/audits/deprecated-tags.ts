@@ -11,14 +11,12 @@ const deprecatedTagsNames: string[] = [
   'menuitem',
 ];
 
-export function auditDeprecatedTags(
-  document: Pick<WebDocument, 'getElementsByTagNameCount'>,
-): AuditResult {
-  const deprecatedElements = Object.fromEntries(
-    deprecatedTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
-  );
+export function auditDeprecatedTags(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+  const deprecatedTagAmountMap = document.getTagAmountMap(deprecatedTagsNames);
 
-  const isExistDeprecatedTag = Object.values(deprecatedElements).some(tagsAmount => tagsAmount > 0);
+  const isExistDeprecatedTag = Object.values(deprecatedTagAmountMap).some(
+    tagAmount => tagAmount > 0,
+  );
   const errors: string[] = [];
   if (isExistDeprecatedTag) {
     errors.push('Document has some deprecated tag');
@@ -29,7 +27,7 @@ export function auditDeprecatedTags(
     errors,
     tables: [
       {
-        ...deprecatedElements,
+        content: deprecatedTagAmountMap,
       },
     ],
   };

@@ -10,10 +10,11 @@ import { auditDeprecatedTags } from './audits/deprecated-tags';
 import { auditOpenGraph } from './audits/seo';
 
 export type WebDocument = {
-  getElementsByTagNameCount(tag: string): number;
-  getElementsByTagName(tag: string): { length: number };
-  querySelectorAll(query: string): { length: number };
-  getEmptyElementsByTagName(tag: string): { length: number };
+  getTagAmount (tagName: string): number;
+  getTagAmountMap(tagsNames: string[]): TagAmountMap;
+  getElementsByTagName(tagName: string): { length: number };
+  querySelectorAll(querySelector: string): { length: number };
+  getEmptyElementsByTagName(tagName: string): { length: number };
 };
 
 type AuditSectionResult = {
@@ -30,7 +31,8 @@ export type AuditResult = {
 };
 
 export type AuditResultLog = string | any[];
-type AuditResultTable = { name?: string } & { [key: string]: string | number };
+type AuditResultTable = { name?: string, content: TagAmountMap};
+export type TagAmountMap = { [tagName: string]: number };
 
 export class WebAudit {
   private readonly webDocument: WebDocument;
@@ -116,11 +118,11 @@ export class WebAudit {
     const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
     const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings');
     console.groupCollapsed(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`);
-    tables.forEach(({ name, nodes, ...tableDataSet }) => {
+    tables.forEach(({ name, content}) => {
       if (name) {
         console.log(name);
       }
-      console.table(tableDataSet);
+      console.table(content);
     });
     logs.forEach(log => (Array.isArray(log) ? console.log(...log) : console.log(log)));
     console.log('Summary');
