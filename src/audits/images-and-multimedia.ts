@@ -22,10 +22,12 @@ export function auditImagesAndMultimedia(
     errors.push('Tag image is deprecated');
   }
 
-  if (checkExistFlexibleImages(imagesWithSrcsetTagAmount, imagesAndMultimediaAmountMap)) {
-    logs.push('Document has some flexible images');
-  } else {
-    errors.push('Document does not have any flexible images');
+  if (imagesAndMultimediaAmountMap.img > 0) {
+    if (checkExistFlexibleImages(imagesWithSrcsetTagAmount, imagesAndMultimediaAmountMap)) {
+      logs.push('Document has some flexible images');
+    } else {
+      errors.push('Document does not have any flexible images');
+    }
   }
 
   return {

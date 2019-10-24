@@ -26,6 +26,29 @@ Object {
 }
 `;
 
+exports[`auditImagesAndMultimedia document has not any images 1`] = `
+Object {
+  "errors": Array [],
+  "logs": Array [
+    "Document has 0 img with srcset attribute",
+  ],
+  "name": "images and multimedia in dom",
+  "tables": Array [
+    Object {
+      "content": Object {
+        "canvas": 0,
+        "image": 0,
+        "img": 0,
+        "map": 0,
+        "picture": 0,
+        "source": 0,
+        "video": 0,
+      },
+    },
+  ],
+}
+`;
+
 exports[`auditImagesAndMultimedia document has not flexible images 1`] = `
 Object {
   "errors": Array [

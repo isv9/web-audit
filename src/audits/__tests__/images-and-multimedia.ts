@@ -26,4 +26,12 @@ describe('auditImagesAndMultimedia', () => {
     };
     expect(auditImagesAndMultimedia(document)).toMatchSnapshot();
   });
+
+  it('document has not any images', () => {
+    const document: Pick<WebDocument, 'querySelectorAll' | 'getTagAmountMap'> = {
+      getTagAmountMap: createGetTagAmountMapMock(() => 0),
+      querySelectorAll: jest.fn(() => ({ length: 0 })),
+    };
+    expect(auditImagesAndMultimedia(document)).toMatchSnapshot();
+  });
 });
