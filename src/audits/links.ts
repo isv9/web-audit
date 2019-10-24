@@ -20,7 +20,6 @@ export function auditLinks(
   return {
     logs,
     warnings,
-    name: 'links in dom',
-    tables: [],
+    name: 'links in dom'
   };
 }

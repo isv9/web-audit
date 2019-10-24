@@ -24,7 +24,7 @@ type AuditSectionResult = {
 
 export type AuditResult = {
   name?: string;
-  tables: (AuditResultTable)[];
+  tables?: (AuditResultTable)[];
   logs?: AuditResultLog[];
   warnings?: string[];
   errors?: string[];
@@ -114,7 +114,7 @@ export class WebAudit {
   }
 
   static renderAuditResult(auditResult: AuditResult) {
-    const { name, tables, errors = [], warnings = [], logs = [] } = auditResult;
+    const { name, tables = [], errors = [], warnings = [], logs = [] } = auditResult;
     const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
     const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings');
     console.groupCollapsed(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`);

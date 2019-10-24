@@ -38,8 +38,7 @@ export function auditOpenGraph(document: Pick<WebDocument, 'querySelectorAll'>):
   return {
     warnings,
     logs,
-    name: 'Open Graph',
-    tables: [],
+    name: 'Open Graph'
   };
 }
 

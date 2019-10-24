@@ -8,7 +8,6 @@ Object {
     "Document has some base meta tags: 'title, description, url'",
   ],
   "name": "Open Graph",
-  "tables": Array [],
   "warnings": Array [],
 }
 `;
@@ -19,7 +18,6 @@ Object {
     "Document has some base meta tags: 'title'",
   ],
   "name": "Open Graph",
-  "tables": Array [],
   "warnings": Array [
     "Document does not have a base meta tag 'og:description'",
     "Document does not have a base meta tag 'og:url'",
