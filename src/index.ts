@@ -12,7 +12,10 @@ const webAudit = new WebAudit({
     return document.querySelectorAll(`${tag}:empty`);
   },
   getElementsByTagName(tag: string): { length: number } {
-    return document.getElementsByTagName(tag)
-  }
+    return document.getElementsByTagName(tag);
+  },
+  getElementsWhichHasAttribute(tag: string, attribute: string): { length: number } {
+    return document.querySelectorAll(`${tag}[${attribute}]`);
+  },
 });
 webAudit.audit();

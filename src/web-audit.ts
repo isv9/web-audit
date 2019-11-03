@@ -12,6 +12,7 @@ import { auditOpenGraph } from './audits/seo';
 export type WebDocument = {
   getElementsByTagNameCount(tag: string): number;
   getElementsByTagName(tag: string): { length: number };
+  getElementsWhichHasAttribute(tag: string, attribute: string): { length: number };
   querySelectorAll(query: string): { length: number };
   getEmptyElementsByTagName(tag: string): { length: number };
 };
@@ -26,10 +27,11 @@ export type AuditResult = {
   tables: (AuditResultTable)[];
   logs?: AuditResultLog[];
   warnings?: string[];
-  errors?: string[];
+  errors?: AuditResultError[];
 };
 
 export type AuditResultLog = string | any[];
+export type AuditResultError = string | object | any[];
 type AuditResultTable = { name?: string } & { [key: string]: string | number };
 
 export class WebAudit {

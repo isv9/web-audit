@@ -2,6 +2,47 @@
 
 exports[`auditLinks document has some empty links 1`] = `
 Object {
+  "errors": Array [],
+  "logs": Array [
+    Array [
+      "Document has 3 links",
+      Object {
+        "length": 3,
+      },
+    ],
+    Array [
+      Array [
+        "Empty \\"a\\" elements count in dom",
+        Object {
+          "length": 5,
+        },
+      ],
+    ],
+  ],
+  "name": "links in dom",
+  "tables": Array [],
+  "warnings": Array [
+    "Document has empty links",
+  ],
+}
+`;
+
+exports[`auditLinks document has some links which has deprecated attribute 1`] = `
+Object {
+  "errors": Array [
+    Object {
+      "errorMessage": "Document has links which has deprecated \\"name\\" attribute",
+      "links": Object {
+        "length": 2,
+      },
+    },
+    Object {
+      "errorMessage": "Document has links which has deprecated \\"rev\\" attribute",
+      "links": Object {
+        "length": 2,
+      },
+    },
+  ],
   "logs": Array [
     Array [
       "Document has 3 links",
@@ -28,6 +69,7 @@ Object {
 
 exports[`auditLinks document is ok 1`] = `
 Object {
+  "errors": Array [],
   "logs": Array [
     Array [
       "Document has 3 links",
