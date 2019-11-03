@@ -12,13 +12,38 @@ Object {
   "name": "images and multimedia in dom",
   "tables": Array [
     Object {
-      "canvas": 3,
-      "image": 1,
-      "img": 3,
-      "map": 3,
-      "picture": 3,
-      "source": 3,
-      "video": 3,
+      "content": Object {
+        "canvas": 3,
+        "image": 1,
+        "img": 3,
+        "map": 3,
+        "picture": 3,
+        "source": 3,
+        "video": 3,
+      },
+    },
+  ],
+}
+`;
+
+exports[`auditImagesAndMultimedia document has not any images 1`] = `
+Object {
+  "errors": Array [],
+  "logs": Array [
+    "Document has 0 img with srcset attribute",
+  ],
+  "name": "images and multimedia in dom",
+  "tables": Array [
+    Object {
+      "content": Object {
+        "canvas": 0,
+        "image": 0,
+        "img": 0,
+        "map": 0,
+        "picture": 0,
+        "source": 0,
+        "video": 0,
+      },
     },
   ],
 }
@@ -35,13 +60,15 @@ Object {
   "name": "images and multimedia in dom",
   "tables": Array [
     Object {
-      "canvas": 0,
-      "image": 0,
-      "img": 10,
-      "map": 0,
-      "picture": 0,
-      "source": 0,
-      "video": 0,
+      "content": Object {
+        "canvas": 0,
+        "image": 0,
+        "img": 10,
+        "map": 0,
+        "picture": 0,
+        "source": 0,
+        "video": 0,
+      },
     },
   ],
 }
@@ -57,13 +84,15 @@ Object {
   "name": "images and multimedia in dom",
   "tables": Array [
     Object {
-      "canvas": 3,
-      "image": 0,
-      "img": 3,
-      "map": 3,
-      "picture": 3,
-      "source": 3,
-      "video": 3,
+      "content": Object {
+        "canvas": 3,
+        "image": 0,
+        "img": 3,
+        "map": 3,
+        "picture": 3,
+        "source": 3,
+        "video": 3,
+      },
     },
   ],
 }

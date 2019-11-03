@@ -1,14 +1,14 @@
 import { AuditResultLog, WebDocument } from '../web-audit';
 
-export function getEmptyElementsLiveCollections(
+export function getLogsForEmptyElements(
   document: Pick<WebDocument, 'getEmptyElementsByTagName'>,
   tagsNames: string[],
 ): AuditResultLog[] {
-  return tagsNames.reduce<AuditResultLog[]>((liveCollections, tag) => {
-    const emptyElements = document.getEmptyElementsByTagName(tag);
-    if (emptyElements.length > 0) {
-      liveCollections.push([`Empty "${tag}" elements count in dom`, emptyElements]);
+  return tagsNames.reduce<AuditResultLog[]>((emptyElements, tag) => {
+    const foundEmptyElements = document.getEmptyElementsByTagName(tag);
+    if (foundEmptyElements.length > 0) {
+      emptyElements.push([`Empty "${tag}" elements count in dom`, foundEmptyElements]);
     }
-    return liveCollections;
+    return emptyElements;
   }, []);
 }

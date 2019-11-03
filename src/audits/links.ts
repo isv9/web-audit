@@ -1,5 +1,5 @@
 import { AuditResult, AuditResultError, AuditResultLog, WebDocument } from '../web-audit';
-import { getEmptyElementsLiveCollections } from './utils';
+import { getLogsForEmptyElements } from './utils';
 
 const deprecatedLinkAttributes: string[] = ['charset', 'coords', 'name', 'rev', 'shape'];
 
@@ -16,10 +16,10 @@ export function auditLinks(
   }
   const warnings: string[] = [];
 
-  const emptyElementsLogs = getEmptyElementsLiveCollections(document, ['a']);
-  if (emptyElementsLogs.length > 0) {
+  const logsForEmptyLinks = getLogsForEmptyElements(document, ['a']);
+  if (logsForEmptyLinks.length > 0) {
     warnings.push('Document has empty links');
-    logs.push(emptyElementsLogs);
+    logs.push(logsForEmptyLinks);
   }
   const linksWithDeprecatedAttributeMap = getLinksWithDeprecatedAttributeMap(document);
   const errors: AuditResultError[] = [];
@@ -37,8 +37,7 @@ export function auditLinks(
     logs,
     errors,
     warnings,
-    name: 'links in dom',
-    tables: [],
+    name: 'links in dom'
   };
 }
 

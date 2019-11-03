@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run test && webpack --mode production",
-    "test": "jest"
+    "build": "npm run lint && npm run test && webpack --mode production",
+    "test": "jest",
+    "lint": "tsc --noEmit && eslint \"*/**/*.{ts,tsx}\""
   },
   "husky": {
     "hooks": {

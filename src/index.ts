@@ -1,21 +1,26 @@
-import { WebAudit } from './web-audit';
+import { TagAmountMap, WebAudit } from './web-audit';
 
 console.clear();
 const webAudit = new WebAudit({
-  getElementsByTagNameCount(tag: string): number {
-    return document.getElementsByTagName(tag).length;
+  getTagAmount(tagName: string): number {
+    return document.getElementsByTagName(tagName).length;
   },
-  querySelectorAll(query: string): { length: number } {
-    return document.querySelectorAll(query);
+  getTagAmountMap(tagsNames: string[]): TagAmountMap {
+    return Object.fromEntries(
+      tagsNames.map(tagName => [tagName, document.getElementsByTagName(tagName).length]),
+    );
   },
-  getEmptyElementsByTagName(tag: string): { length: number } {
-    return document.querySelectorAll(`${tag}:empty`);
+  querySelectorAll(querySelector: string): { length: number } {
+    return document.querySelectorAll(querySelector);
   },
-  getElementsByTagName(tag: string): { length: number } {
-    return document.getElementsByTagName(tag);
+  getEmptyElementsByTagName(tagName: string): { length: number } {
+    return document.querySelectorAll(`${tagName}:empty`);
   },
-  getElementsWhichHasAttribute(tag: string, attribute: string): { length: number } {
-    return document.querySelectorAll(`${tag}[${attribute}]`);
+  getElementsByTagName(tagName: string): { length: number } {
+    return document.getElementsByTagName(tagName);
+  },
+  getElementsWhichHasAttribute(tagName: string, attribute: string): { length: number } {
+    return document.querySelectorAll(`${tagName}[${attribute}]`);
   },
 });
 webAudit.audit();

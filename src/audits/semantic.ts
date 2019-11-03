@@ -1,5 +1,5 @@
-import { AuditResult, AuditResultLog, WebDocument } from '../web-audit';
-import { getEmptyElementsLiveCollections } from './utils';
+import { AuditResult, AuditResultLog, TagAmountMap, WebDocument } from '../web-audit';
+import { getLogsForEmptyElements } from './utils';
 
 const commonTagsNames: string[] = ['nav', 'header', 'main', 'footer'];
 
@@ -36,48 +36,38 @@ const blockTagsNames: string[] = [
   'button',
 ];
 
-export function auditCommonSemantics(
-  document: Pick<WebDocument, 'getElementsByTagNameCount'>,
-): AuditResult {
-  const commonElements = Object.fromEntries(
-    commonTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
-  );
+export function auditCommonSemantics(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+  const commonTagAmountMap = document.getTagAmountMap(commonTagsNames);
   const errors: string[] = [];
   const warnings: string[] = [];
-  if (commonElements.main !== 1) {
-    if (commonElements.main > 1) {
+  if (commonTagAmountMap.main !== 1) {
+    if (commonTagAmountMap.main > 1) {
       errors.push('Document must have one main tag');
     } else {
       warnings.push('Document does not have main tag');
     }
   }
-  if (commonElements.header < 1) {
+  if (commonTagAmountMap.header < 1) {
     warnings.push('Document does not have header tag');
   }
-  if (commonElements.nav < 1) {
+  if (commonTagAmountMap.nav < 1) {
     warnings.push('Document does not have nav tag');
   }
   return {
     name: 'common elements count in dom',
-    tables: [commonElements],
+    tables: [{ content: commonTagAmountMap }],
     warnings,
     errors,
   };
 }
 
-export function auditTextSemantics(
-  document: Pick<WebDocument, 'getElementsByTagNameCount'>,
-): AuditResult {
-  const textElements = Object.fromEntries(
-    textTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
-  );
-  const textSemanticElements = Object.fromEntries(
-    textSemanticTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
-  );
+export function auditTextSemantics(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+  const textTagAmountMap = document.getTagAmountMap(textTagsNames);
+  const textSemanticTagAmountMap = document.getTagAmountMap(textSemanticTagsNames);
 
   const isExistSomeTextOrTextSemanticTag = Object.values({
-    ...textElements,
-    ...textSemanticElements,
+    ...textTagAmountMap,
+    ...textSemanticTagAmountMap,
   }).some(tagsAmount => tagsAmount > 0);
   const errors: string[] = [];
   if (!isExistSomeTextOrTextSemanticTag) {
@@ -90,24 +80,20 @@ export function auditTextSemantics(
     tables: [
       {
         name: 'text elements',
-        ...textElements,
+        content: textTagAmountMap,
       },
       {
         name: 'text semantic elements',
-        ...textSemanticElements,
+        content: textSemanticTagAmountMap,
       },
     ],
   };
 }
 
-export function auditHeaderSemantics(
-  document: Pick<WebDocument, 'getElementsByTagNameCount'>,
-): AuditResult {
-  const headerElements = Object.fromEntries(
-    headerTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
-  );
+export function auditHeaderSemantics(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+  const headerTagAmountMap = document.getTagAmountMap(headerTagsNames);
   const errors: string[] = [];
-  if (headerElements['h1'] !== 1) {
+  if (headerTagAmountMap.h1 !== 1) {
     errors.push('Document must have one h1');
   }
   return {
@@ -115,7 +101,7 @@ export function auditHeaderSemantics(
     name: 'header elements count in dom',
     tables: [
       {
-        ...headerElements,
+        content: headerTagAmountMap,
       },
     ],
   };
@@ -124,23 +110,21 @@ export function auditHeaderSemantics(
 export function auditBlockSemantics(
   document: Pick<
     WebDocument,
-    'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getElementsByTagNameCount'
+    'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getTagAmountMap'
   >,
 ): AuditResult {
-  const blockElements = Object.fromEntries(
-    blockTagsNames.map(tag => [tag, document.getElementsByTagNameCount(tag)]),
-  );
+  const blockTagAmountMap = document.getTagAmountMap(blockTagsNames);
   const warnings: string[] = [];
-  if (checkDivatos(blockElements)) {
+  if (checkTooMuchDiv(blockTagAmountMap)) {
     warnings.push('Document has much div');
   }
   const logs: AuditResultLog[] = [];
-  const emptyElementsLogs = getEmptyElementsLiveCollections(document, blockTagsNames);
-  if (emptyElementsLogs.length > 0) {
+  const LogsForEmptyBlockElements = getLogsForEmptyElements(document, blockTagsNames);
+  if (LogsForEmptyBlockElements.length > 0) {
     warnings.push('Document has empty blocks');
-    logs.push(emptyElementsLogs);
+    logs.push(LogsForEmptyBlockElements);
   }
-  if (blockElements.button > 0) {
+  if (blockTagAmountMap.button > 0) {
     logs.push(['buttons', document.getElementsByTagName('button')]);
   }
 
@@ -150,15 +134,15 @@ export function auditBlockSemantics(
     name: 'block elements count in dom',
     tables: [
       {
-        ...blockElements,
+        content: blockTagAmountMap,
       },
     ],
   };
 }
 
-function checkDivatos(blockElements: { [tag: string]: number }): boolean {
-  const divCount = blockElements['div'];
-  const articlePart = (100 * blockElements['article']) / divCount;
-  const sectionPart = (100 * blockElements['section']) / divCount;
+function checkTooMuchDiv(blockTagAmountMap: TagAmountMap): boolean {
+  const { div: divAmount, article: articleAmount, section: sectionAmount } = blockTagAmountMap;
+  const articlePart = (100 * articleAmount) / divAmount;
+  const sectionPart = (100 * sectionAmount) / divAmount;
   return articlePart + sectionPart < 90;
 }
