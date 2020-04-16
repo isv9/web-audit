@@ -20,7 +20,6 @@ Object {
     ],
   ],
   "name": "links in dom",
-  "tables": Array [],
   "warnings": Array [
     "Document has empty links",
   ],

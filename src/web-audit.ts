@@ -31,8 +31,8 @@ export type AuditResult = {
   errors?: AuditResultError[];
 };
 
-export type AuditResultLog = string | any[];
-export type AuditResultError = string | object | any[];
+export type AuditResultLog = string | unknown[];
+export type AuditResultError = string | object | unknown[];
 type AuditResultTable = { name?: string; content: TagAmountMap };
 export type TagAmountMap = { [tagName: string]: number };
 
