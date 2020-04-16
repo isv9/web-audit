@@ -7,7 +7,10 @@ export function getLogsForEmptyElements(
   return tagsNames.reduce<AuditResultLog[]>((emptyElements, tag) => {
     const foundEmptyElements = document.getEmptyElementsByTagName(tag);
     if (foundEmptyElements.length > 0) {
-      emptyElements.push([`Empty "${tag}" elements count in dom`, foundEmptyElements]);
+      emptyElements.push([
+        `Empty "${tag}" elements count in dom`,
+        foundEmptyElements,
+      ]);
     }
     return emptyElements;
   }, []);

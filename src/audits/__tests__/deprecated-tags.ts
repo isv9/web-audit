@@ -11,7 +11,9 @@ describe('auditDeprecatedTags', () => {
   });
   it('document has some deprecated tags', () => {
     const document: Pick<WebDocument, 'getTagAmountMap'> = {
-      getTagAmountMap: createGetTagAmountMapMock(tag => (['content', 'dir'].includes(tag) ? 1 : 0)),
+      getTagAmountMap: createGetTagAmountMapMock((tag) =>
+        ['content', 'dir'].includes(tag) ? 1 : 0,
+      ),
     };
     expect(auditDeprecatedTags(document)).toMatchSnapshot();
   });

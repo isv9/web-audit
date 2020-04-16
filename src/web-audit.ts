@@ -13,7 +13,10 @@ export type WebDocument = {
   getTagAmount(tagName: string): number;
   getTagAmountMap(tagsNames: string[]): TagAmountMap;
   getElementsByTagName(tagName: string): { length: number };
-  getElementsWhichHasAttribute(tagName: string, attribute: string): { length: number };
+  getElementsWhichHasAttribute(
+    tagName: string,
+    attribute: string,
+  ): { length: number };
   querySelectorAll(querySelector: string): { length: number };
   getEmptyElementsByTagName(tagName: string): { length: number };
 };
@@ -25,7 +28,7 @@ type AuditSectionResult = {
 
 export type AuditResult = {
   name?: string;
-  tables?: (AuditResultTable)[];
+  tables?: AuditResultTable[];
   logs?: AuditResultLog[];
   warnings?: string[];
   errors?: AuditResultError[];
@@ -102,35 +105,59 @@ export class WebAudit {
       errorsCount: 0,
       warningsCount: 0,
     };
-    auditResults.forEach(auditResult => {
-      const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
-      const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings');
+    auditResults.forEach((auditResult) => {
+      const errorsCount = WebAudit.getAuditResultMessagesCount(
+        auditResult,
+        'errors',
+      );
+      const warningsCount = WebAudit.getAuditResultMessagesCount(
+        auditResult,
+        'warnings',
+      );
       details.errorsCount += errorsCount;
       details.warningsCount += warningsCount;
     });
     console.groupCollapsed(
       `${name}, (errors="${details.errorsCount}", warnings="${details.warningsCount}")`,
     );
-    auditResults.forEach(auditResult => WebAudit.renderAuditResult(auditResult));
+    auditResults.forEach((auditResult) =>
+      WebAudit.renderAuditResult(auditResult),
+    );
     console.groupEnd();
   }
 
   static renderAuditResult(auditResult: AuditResult) {
-    const { name, tables = [], errors = [], warnings = [], logs = [] } = auditResult;
-    const errorsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'errors');
-    const warningsCount = WebAudit.getAuditResultMessagesCount(auditResult, 'warnings');
-    console.groupCollapsed(`${name}, (errors="${errorsCount}", warnings="${warningsCount}")`);
+    const {
+      name,
+      tables = [],
+      errors = [],
+      warnings = [],
+      logs = [],
+    } = auditResult;
+    const errorsCount = WebAudit.getAuditResultMessagesCount(
+      auditResult,
+      'errors',
+    );
+    const warningsCount = WebAudit.getAuditResultMessagesCount(
+      auditResult,
+      'warnings',
+    );
+    console.groupCollapsed(
+      `${name}, (errors="${errorsCount}", warnings="${warningsCount}")`,
+    );
     tables.forEach(({ name, content }) => {
       if (name) {
         console.log(name);
       }
       console.table(content);
     });
-    logs.forEach(log => (Array.isArray(log) ? console.log(...log) : console.log(log)));
+    logs.forEach((log) =>
+      Array.isArray(log) ? console.log(...log) : console.log(log),
+    );
     console.log('Summary');
     if (errorsCount > 0 || warningsCount > 0) {
-      errors.forEach(message => console.error(message));
-      warnings.forEach(message => console.warn(message));
+      errors.forEach((message) => console.error(message));
+      warnings.forEach((message) => console.warn(message));
     } else {
       console.log('It is OK');
     }
@@ -138,7 +165,10 @@ export class WebAudit {
     console.groupEnd();
   }
 
-  static getAuditResultMessagesCount(auditResult: AuditResult, key: keyof AuditResult): number {
+  static getAuditResultMessagesCount(
+    auditResult: AuditResult,
+    key: keyof AuditResult,
+  ): number {
     let property = auditResult[key];
     if (property === null || property === undefined) {
       property = [];

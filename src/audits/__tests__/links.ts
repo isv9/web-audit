@@ -5,7 +5,9 @@ describe('auditLinks', () => {
   it('document is ok', () => {
     const document: Pick<
       WebDocument,
-      'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getElementsWhichHasAttribute'
+      | 'getEmptyElementsByTagName'
+      | 'getElementsByTagName'
+      | 'getElementsWhichHasAttribute'
     > = {
       getElementsByTagName: jest.fn(() => ({ length: 3 })),
       getEmptyElementsByTagName: jest.fn(() => ({ length: 0 })),
@@ -16,7 +18,9 @@ describe('auditLinks', () => {
   it('document has some empty links', () => {
     const document: Pick<
       WebDocument,
-      'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getElementsWhichHasAttribute'
+      | 'getEmptyElementsByTagName'
+      | 'getElementsByTagName'
+      | 'getElementsWhichHasAttribute'
     > = {
       getElementsByTagName: jest.fn(() => ({ length: 3 })),
       getEmptyElementsByTagName: jest.fn(() => ({ length: 5 })),
@@ -28,7 +32,9 @@ describe('auditLinks', () => {
   it('document has some links which has deprecated attribute', () => {
     const document: Pick<
       WebDocument,
-      'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getElementsWhichHasAttribute'
+      | 'getEmptyElementsByTagName'
+      | 'getElementsByTagName'
+      | 'getElementsWhichHasAttribute'
     > = {
       getElementsByTagName: jest.fn(() => ({ length: 3 })),
       getEmptyElementsByTagName: jest.fn(() => ({ length: 5 })),

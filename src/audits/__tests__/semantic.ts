@@ -16,14 +16,18 @@ describe('auditCommonSemantics', () => {
   });
   it('document has two main tags', () => {
     const document: Pick<WebDocument, 'getTagAmountMap'> = {
-      getTagAmountMap: createGetTagAmountMapMock(tag => (tag === 'main' ? 2 : 1)),
+      getTagAmountMap: createGetTagAmountMapMock((tag) =>
+        tag === 'main' ? 2 : 1,
+      ),
     };
     expect(auditCommonSemantics(document)).toMatchSnapshot();
   });
 
   it('document has two header tags', () => {
     const document: Pick<WebDocument, 'getTagAmountMap'> = {
-      getTagAmountMap: createGetTagAmountMapMock(tag => (tag === 'header' ? 2 : 1)),
+      getTagAmountMap: createGetTagAmountMapMock((tag) =>
+        tag === 'header' ? 2 : 1,
+      ),
     };
     expect(auditCommonSemantics(document)).toMatchSnapshot();
   });
@@ -67,7 +71,9 @@ describe('auditHeaderSemantics', () => {
   });
   it('document has two h1', () => {
     const document: Pick<WebDocument, 'getTagAmountMap'> = {
-      getTagAmountMap: createGetTagAmountMapMock(tag => (tag === 'h1' ? 2 : 0)),
+      getTagAmountMap: createGetTagAmountMapMock((tag) =>
+        tag === 'h1' ? 2 : 0,
+      ),
     };
     expect(auditHeaderSemantics(document)).toMatchSnapshot();
   });
@@ -91,8 +97,12 @@ describe('auditBlocksSemantics', () => {
       WebDocument,
       'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getTagAmountMap'
     > = {
-      getTagAmountMap: createGetTagAmountMapMock(tag => (tag === 'div' ? 100 : 20)),
-      getEmptyElementsByTagName: jest.fn(tag => ({ length: tag === 'article' ? 2 : 0 })),
+      getTagAmountMap: createGetTagAmountMapMock((tag) =>
+        tag === 'div' ? 100 : 20,
+      ),
+      getEmptyElementsByTagName: jest.fn((tag) => ({
+        length: tag === 'article' ? 2 : 0,
+      })),
       getElementsByTagName: jest.fn(() => ({ length: 7 })),
     };
     expect(auditBlockSemantics(document)).toMatchSnapshot();

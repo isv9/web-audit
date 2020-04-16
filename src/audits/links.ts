@@ -1,12 +1,25 @@
-import { AuditResult, AuditResultError, AuditResultLog, WebDocument } from '../web-audit';
+import {
+  AuditResult,
+  AuditResultError,
+  AuditResultLog,
+  WebDocument,
+} from '../web-audit';
 import { getLogsForEmptyElements } from './utils';
 
-const deprecatedLinkAttributes: string[] = ['charset', 'coords', 'name', 'rev', 'shape'];
+const deprecatedLinkAttributes: string[] = [
+  'charset',
+  'coords',
+  'name',
+  'rev',
+  'shape',
+];
 
 export function auditLinks(
   document: Pick<
     WebDocument,
-    'getEmptyElementsByTagName' | 'getElementsByTagName' | 'getElementsWhichHasAttribute'
+    | 'getEmptyElementsByTagName'
+    | 'getElementsByTagName'
+    | 'getElementsWhichHasAttribute'
   >,
 ): AuditResult {
   const linksElements = document.getElementsByTagName('a');
@@ -21,23 +34,27 @@ export function auditLinks(
     warnings.push('Document has empty links');
     logs.push(logsForEmptyLinks);
   }
-  const linksWithDeprecatedAttributeMap = getLinksWithDeprecatedAttributeMap(document);
+  const linksWithDeprecatedAttributeMap = getLinksWithDeprecatedAttributeMap(
+    document,
+  );
   const errors: AuditResultError[] = [];
   if (linksWithDeprecatedAttributeMap.size > 0) {
-    linksWithDeprecatedAttributeMap.forEach((links, deprecatedLinkAttribute) => {
-      const error = {
-        errorMessage: `Document has links which has deprecated "${deprecatedLinkAttribute}" attribute`,
-        links,
-      };
-      errors.push(error);
-    });
+    linksWithDeprecatedAttributeMap.forEach(
+      (links, deprecatedLinkAttribute) => {
+        const error = {
+          errorMessage: `Document has links which has deprecated "${deprecatedLinkAttribute}" attribute`,
+          links,
+        };
+        errors.push(error);
+      },
+    );
   }
 
   return {
     logs,
     errors,
     warnings,
-    name: 'links in dom'
+    name: 'links in dom',
   };
 }
 
@@ -51,7 +68,10 @@ function getLinksWithDeprecatedAttributeMap(
         deprecatedLinkAttribute,
       );
       if (linksWithDeprecatedAttribute.length > 0) {
-        linksWithDeprecatedAttributeMap.set(deprecatedLinkAttribute, linksWithDeprecatedAttribute);
+        linksWithDeprecatedAttributeMap.set(
+          deprecatedLinkAttribute,
+          linksWithDeprecatedAttribute,
+        );
       }
       return linksWithDeprecatedAttributeMap;
     },

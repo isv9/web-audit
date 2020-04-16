@@ -1,4 +1,9 @@
-import { AuditResult, AuditResultLog, TagAmountMap, WebDocument } from '../web-audit';
+import {
+  AuditResult,
+  AuditResultLog,
+  TagAmountMap,
+  WebDocument,
+} from '../web-audit';
 
 const deprecatedTagsNames: string[] = [
   'acronym',
@@ -11,7 +16,9 @@ const deprecatedTagsNames: string[] = [
   'menuitem',
 ];
 
-export function auditDeprecatedTags(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+export function auditDeprecatedTags(
+  document: Pick<WebDocument, 'getTagAmountMap'>,
+): AuditResult {
   const deprecatedTagAmountMap = document.getTagAmountMap(deprecatedTagsNames);
   const existedDeprecatedTag: TagAmountMap = Object.fromEntries(
     Object.entries(deprecatedTagAmountMap).filter(

@@ -1,4 +1,9 @@
-import { AuditResult, AuditResultLog, TagAmountMap, WebDocument } from '../web-audit';
+import {
+  AuditResult,
+  AuditResultLog,
+  TagAmountMap,
+  WebDocument,
+} from '../web-audit';
 import { getLogsForEmptyElements } from './utils';
 
 const commonTagsNames: string[] = ['nav', 'header', 'main', 'footer'];
@@ -24,7 +29,9 @@ const textSemanticTagsNames: string[] = [
   'pre',
 ];
 
-const headerTagsNames: string[] = Array.from(new Array(6)).map((_, index) => `h${index + 1}`);
+const headerTagsNames: string[] = Array.from(new Array(6)).map(
+  (_, index) => `h${index + 1}`,
+);
 const blockTagsNames: string[] = [
   'div',
   'section',
@@ -36,7 +43,9 @@ const blockTagsNames: string[] = [
   'button',
 ];
 
-export function auditCommonSemantics(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+export function auditCommonSemantics(
+  document: Pick<WebDocument, 'getTagAmountMap'>,
+): AuditResult {
   const commonTagAmountMap = document.getTagAmountMap(commonTagsNames);
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -61,14 +70,18 @@ export function auditCommonSemantics(document: Pick<WebDocument, 'getTagAmountMa
   };
 }
 
-export function auditTextSemantics(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+export function auditTextSemantics(
+  document: Pick<WebDocument, 'getTagAmountMap'>,
+): AuditResult {
   const textTagAmountMap = document.getTagAmountMap(textTagsNames);
-  const textSemanticTagAmountMap = document.getTagAmountMap(textSemanticTagsNames);
+  const textSemanticTagAmountMap = document.getTagAmountMap(
+    textSemanticTagsNames,
+  );
 
   const isExistSomeTextOrTextSemanticTag = Object.values({
     ...textTagAmountMap,
     ...textSemanticTagAmountMap,
-  }).some(tagsAmount => tagsAmount > 0);
+  }).some((tagsAmount) => tagsAmount > 0);
   const errors: string[] = [];
   if (!isExistSomeTextOrTextSemanticTag) {
     errors.push('Document does not any text tag');
@@ -90,7 +103,9 @@ export function auditTextSemantics(document: Pick<WebDocument, 'getTagAmountMap'
   };
 }
 
-export function auditHeaderSemantics(document: Pick<WebDocument, 'getTagAmountMap'>): AuditResult {
+export function auditHeaderSemantics(
+  document: Pick<WebDocument, 'getTagAmountMap'>,
+): AuditResult {
   const headerTagAmountMap = document.getTagAmountMap(headerTagsNames);
   const errors: string[] = [];
   if (headerTagAmountMap.h1 !== 1) {
@@ -119,7 +134,10 @@ export function auditBlockSemantics(
     warnings.push('Document has much div');
   }
   const logs: AuditResultLog[] = [];
-  const LogsForEmptyBlockElements = getLogsForEmptyElements(document, blockTagsNames);
+  const LogsForEmptyBlockElements = getLogsForEmptyElements(
+    document,
+    blockTagsNames,
+  );
   if (LogsForEmptyBlockElements.length > 0) {
     warnings.push('Document has empty blocks');
     logs.push(LogsForEmptyBlockElements);
@@ -141,7 +159,11 @@ export function auditBlockSemantics(
 }
 
 function checkTooMuchDiv(blockTagAmountMap: TagAmountMap): boolean {
-  const { div: divAmount, article: articleAmount, section: sectionAmount } = blockTagAmountMap;
+  const {
+    div: divAmount,
+    article: articleAmount,
+    section: sectionAmount,
+  } = blockTagAmountMap;
   const articlePart = (100 * articleAmount) / divAmount;
   const sectionPart = (100 * sectionAmount) / divAmount;
   return articlePart + sectionPart < 90;

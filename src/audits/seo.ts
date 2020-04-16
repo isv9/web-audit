@@ -2,9 +2,14 @@ import { AuditResult, AuditResultLog, WebDocument } from '../web-audit';
 
 type BaseOpenGraphMetaPropertyName = 'title' | 'description' | 'url';
 type OpenGraphMetaPropertyName = BaseOpenGraphMetaPropertyName;
-type CheckedOpenGraphMetaTag = { propertyName: OpenGraphMetaPropertyName; isExisted: boolean };
+type CheckedOpenGraphMetaTag = {
+  propertyName: OpenGraphMetaPropertyName;
+  isExisted: boolean;
+};
 
-export function auditOpenGraph(document: Pick<WebDocument, 'querySelectorAll'>): AuditResult {
+export function auditOpenGraph(
+  document: Pick<WebDocument, 'querySelectorAll'>,
+): AuditResult {
   const baseOgMetaPropertiesNames: BaseOpenGraphMetaPropertyName[] = [
     'title',
     'description',
@@ -20,7 +25,9 @@ export function auditOpenGraph(document: Pick<WebDocument, 'querySelectorAll'>):
   if (checkedBaseOpenGraphMetaTags.some(({ isExisted }) => !isExisted)) {
     checkedBaseOpenGraphMetaTags.forEach(({ isExisted, propertyName }) => {
       if (!isExisted) {
-        warnings.push(`Document does not have a base meta tag 'og:${propertyName}'`);
+        warnings.push(
+          `Document does not have a base meta tag 'og:${propertyName}'`,
+        );
       }
     });
   }
@@ -31,14 +38,16 @@ export function auditOpenGraph(document: Pick<WebDocument, 'querySelectorAll'>):
       .filter(({ isExisted }) => isExisted)
       .map(({ propertyName }) => propertyName);
     logs.push(
-      `Document has some base meta tags: '${existedOpenGraphBaseMetaPropertiesNames.join(', ')}'`,
+      `Document has some base meta tags: '${existedOpenGraphBaseMetaPropertiesNames.join(
+        ', ',
+      )}'`,
     );
   }
 
   return {
     warnings,
     logs,
-    name: 'Open Graph'
+    name: 'Open Graph',
   };
 }
 
@@ -47,8 +56,9 @@ function checkExistOpenGraphMetaTag(
   ogMetaPropertyName: OpenGraphMetaPropertyName,
 ): boolean {
   return (
-    document.querySelectorAll(createOpenGraphMetaPropertyQuerySelector(ogMetaPropertyName)).length >
-    0
+    document.querySelectorAll(
+      createOpenGraphMetaPropertyQuerySelector(ogMetaPropertyName),
+    ).length > 0
   );
 }
 

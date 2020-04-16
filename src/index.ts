@@ -7,7 +7,10 @@ const webAudit = new WebAudit({
   },
   getTagAmountMap(tagsNames: string[]): TagAmountMap {
     return Object.fromEntries(
-      tagsNames.map(tagName => [tagName, document.getElementsByTagName(tagName).length]),
+      tagsNames.map((tagName) => [
+        tagName,
+        document.getElementsByTagName(tagName).length,
+      ]),
     );
   },
   querySelectorAll(querySelector: string): { length: number } {
@@ -19,7 +22,10 @@ const webAudit = new WebAudit({
   getElementsByTagName(tagName: string): { length: number } {
     return document.getElementsByTagName(tagName);
   },
-  getElementsWhichHasAttribute(tagName: string, attribute: string): { length: number } {
+  getElementsWhichHasAttribute(
+    tagName: string,
+    attribute: string,
+  ): { length: number } {
     return document.querySelectorAll(`${tagName}[${attribute}]`);
   },
 });
